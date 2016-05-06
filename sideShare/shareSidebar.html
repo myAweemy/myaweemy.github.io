@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+	<title>shareSidebar-CSS3和CSS精灵</title>
+<style type="text/css">
+body,div,ul,li,p{margin: 0;padding: 0;}
+ul{list-style: none;}
+img{border: 0;}
+#sideShareBar{width: 42px;border:1px solid #ccc; border-right: none; position: absolute;right: -42px;top: 200px;}
+#sign{display: block; width: 23px;height: 88px;position: absolute;left: -23px;top: 80px;border-radius: 5px 0 0 5px; background: url(bg_tip.png) top left no-repeat ; }
+.content-wrap{width: 42px;height: auto;}
+
+.shareIcon{ width: 32px;height: 32px;position: relative; margin: 5px; background: url(bg_content.png);
+			transition: .5s;-webkit-transition:.5s;-o-transition:.5;-moz-transition:.5s;
+}
+
+.toTieba{background-position: 0 0; }
+.toWeixin{background-position: -42px 0; }
+.toWeibo{background-position: -84px 0; }
+.toQzone{background-position: -126px 0; }
+.copyLink{background-position: -168px 0; }
+
+.toWeixin .shareContent{
+	display: none; width: 144px;height: auto;position: absolute; left: -170px;top: -120px; 
+	border: 5px solid rgba(0,0,0,.2);}
+/*画三角形*/
+.toWeixin .share-triangle{
+	border: 7px solid transparent;
+	border-left: 7px solid rgba(0,0,0,.2);
+	position: absolute;
+	right: -19px;
+	top: 124px;}
+.toWeixin .shareContent .des{height: 36px;line-height: 36px;border-bottom: 1px solid #e6e6e6;
+	background-color: #f6f6f6;text-align: center;}
+
+.toWeixin .shareContent img{height: 90px;width: 90px;padding: 5px 24px;}
+
+.shareIcon:hover{cursor: pointer;}
+.toTieba:hover{ background-position: 0 -34px;}
+.toWeixin:hover{ background-position: -42px -34px;}
+.toWeibo:hover{ background-position: -84px -34px;}
+.toQzone:hover{ background-position: -126px -34px;}
+.copyLink:hover{ background-position: -168px -34px;}
+
+.toWeixin:hover .shareContent{display: block;}
+
+</style>
+<script type="text/javascript">
+window.onload = function(){
+	var timer = null;
+	var wrap = document.getElementById('sideShareBar');
+	wrap.onmouseover = function(){
+		startMove(document.body.offsetWidth - wrap.offsetWidth);
+	};
+	wrap.onmouseout = function(){
+		startMove(document.body.offsetWidth);
+	};
+	function startMove(target) {
+		clearInterval(timer);
+		var speed = 0;
+
+		timer = setInterval(function(){
+			//speed分正负。分别用Math.ceil()向上和Math.floor()向下取整
+			speed =  (target - wrap.offsetLeft)>0?Math.ceil((target - wrap.offsetLeft)/12):Math.floor((target - wrap.offsetLeft)/12);
+
+			if(wrap.offsetLeft == target){
+				clearInterval(timer);
+			}
+			else
+			{
+				wrap.style.left = wrap.offsetLeft + speed +'px';
+			}
+		},30);
+	}
+};
+</script>
+</head>
+<body>
+<div id="sideShareBar">
+	<span id="sign"></span>
+	<ul class="content-wrap">
+		<li>
+			<div class="shareIcon toTieba">
+				<div></div>
+			</div>
+		</li>
+
+		<li>
+			<div class="shareIcon toWeixin">
+				<div class="shareContent">
+					<div style="border: 1px solid #999;">
+						<p class="des">扫一扫分享到微信</p>
+						<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAYAAAA4qEECAAADE0lEQVR4nO2WyXLDMAxD8/8/7Z56SCoKi2i7csAZXSwuwGPsyev1eh1d5zdGz6qocmfPZs9nc10PTSegLwXthgu1axFML7be/bEw2gM6oOf9HwEafW+qXDTMMUF+/2i9K7pX2AR0QHNavhq0ArIKVO/MdRdcPQ/obwGNxDPmRBNLHpCWJo0BjbQ0aQxopKVJIzdYFXT2vQOyA7QSAR3Q/P22oDsOC4cxdEYus7QCUscJ6IB+Eujj5FBMVHWj+1Eumqto7I6AFnPdGHZ2XyUk3IF3FmjWyywkDyiBFRbQYAZKYIUFNJjBiugYPOqPnqsaWF3KIpxZfw6b7BpSTAR0QMuzbNDKdxfVKd9FxnBnL5Sr+A3oO0AvFJYiOkygOrRAVKfMRT7I3IAO6EnddqBZkWgYY1iJ1R8A0tWZS/lBcAI6oPcH3QFq1re6d3q59Upf5UdY1qKE1QjogKb7toJWzDHiV+HcMatjEQF9N2j2tesIxYTTVwHl9Kz6kj0Cmu0Z0DuBPvn79NbXBbK6CBIIvRTRf0AH9JNAO0WKIQRagYcWoMxlZnQuKKAnMwL6KaCRCXuYsMxOIKxH5l5h8JbDilAMB/Swx7mv+6ivKpI1jOa6C3SX+XECmtET0MLcW0EjE2gYEoaWpoTSV9E9eq7oofqygwO61kP1ZQcHdK2H6osS2Hs3t6pzDF8NWtKFBrP3bm4p7GmgUWP2vvsVZu+V6P6xsAsO6MXcgBa0ruRKoNnGDDRWMCNsNRQIozrkQfF7HOa/joDW/B5HQF8HGjVghSkLUkXOeilLYTy4CyJ6BXRAkybYuBU0rVIIV+zouQJH6eUuze0b0FeBdl+b5VeJhMME25fRhbQs+A3ogCZjK9BuIJGri2Lmdv4AHL/MfUAHND93W9CKcATaheQAuWJpC94COqAnuaivEtuCdk0695Xe0b2iR9FLagxoJfdfgXbhXblUZSnKp2NSF9CjHLWOmBfQoxy1jpjnC/9spphjl9kBR9GlzBU1BnRA8yb2Ad1x2EWgmkq80rcDDptL8gnogH4Q6B8S5vZSPTc/HAAAAABJRU5ErkJggg==">
+					</div>
+					<div class="share-triangle"></div>
+				</div>
+			</div>
+		</li>
+
+		<li>
+			<div class="shareIcon toWeibo">
+				<div></div>
+			</div>
+		</li>
+
+		<li>
+			<div class="shareIcon toQzone">
+				<div></div>
+			</div>
+		</li>
+
+		<li>
+			<div class="shareIcon copyLink">
+				<div></div>
+			</div>
+		</li>
+	</ul>
+</div>
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8"/>
+<title>手风琴效果</title>
+<style>
+* { padding: 0; margin: 0; }
+li { list-style: none; }
+body { background: #f6f9fc; }
+#show1 { width: 660px; height: 254px; border: 5px solid #f0f; margin: 50px auto 0; overflow: hidden; }
+ul { width: 3300px; height: 254px; }
+ul li { width: 22px; height: 254px; float: left; position: relative; }
+ul span { width: 21px; height: 244px; padding-top: 10px; border-right: 1px solid #fff; position: absolute; top: 0; left: 0; color: #fff; font-size: 12px; text-align: center; cursor: pointer; background-color: #5B7CC3;color: #fff;}
+ul img { width: 550px; height: 254px; }
+.active { background-color: #D5A692; }
+</style>
+</head>
+<body>
+<div id="show1">
+    <ul>
+        <li>
+            <span>图1</span>
+            <img src="images/1.jpg" />
+        </li>
+        <li>
+            <span>图2</span>
+            <img src="images/2.jpg" />
+        </li>
+        <li>
+            <span>图3</span>
+            <img src="images/3.jpg" />
+        </li>
+        <li>
+            <span>图4</span>
+            <img src="images/4.jpg" />
+        </li>
+        <li>
+            <span>图5</span>
+            <img src="images/5.jpg" />
+        </li>
+        <li>
+            <span class="active">图6</span>
+            <img src="images/6.jpg" />
+        </li>
+        
+    </ul>
+</div>
+<script>
+window.onload = function(){
+	var nowIndex = 5;
+    var lis = document.getElementsByTagName('li');
+    for (var i = 0; i < lis.length; i++) {
+        lis[i].index = i;
+        lis[i].onmouseover = function () {
+
+            if (this.index != nowIndex) {
+
+            		changeNow(lis[nowIndex],{width:22});
+	                changeNow(this,{width:550});
+	                
+	                var span = lis[nowIndex].getElementsByTagName('span')[0];
+	                span.className = '';
+
+	            	span = this.getElementsByTagName('span')[0];
+	            	span.className = 'active';
+	           }
+
+            nowIndex = this.index;
+        };
+    }
+};    
+function getStyle(obj, name)
+{
+	if(obj.currentStyle)
+	{
+		return obj.currentStyle[name];
+	}
+	else
+	{
+		return getComputedStyle(obj, false)[name];
+	}
+}
+function changeNow(obj,json,func) {
+	clearInterval(obj.timer);
+	var speed = 0;
+	var attr = 0;
+	
+	obj.timer = setInterval(function(){
+		var isReady = true;
+		for(var i in json){
+			attr = (i=='opacity')?Math.round(parseFloat(getStyle(obj,i)) * 100):attr = parseInt(getStyle(obj,i));
+			speed = (json[i] - attr) > 0 ? Math.ceil((json[i] - attr)/8) : Math.floor((json[i] - attr)/8);
+			attr += speed;
+			
+			if(attr !== json[i])
+				isReady = false;
+			
+			if (i == 'opacity') {
+				obj.style.filter = 'alpha(opacity:'+ attr +')';
+				obj.style.opacity = attr/100;
+			}
+			else{
+				obj.style[i] = attr +'px';
+			}			
+		}
+		if(isReady){
+			clearInterval(obj.timer);
+			if (func) {func();}
+		}
+	},30);	
+}
+</script>
+</body>
+</html>

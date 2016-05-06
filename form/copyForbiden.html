@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>禁止复制粘贴</title>
+<link rel="stylesheet" type="text/css" href="styleForForms.css">
+</head>
+<body>
+<div id="feedback">
+	<form method="post" action="script.php">
+		<fieldset>
+			<legend>FEEDBACK</legend>
+			<div class="fields">
+				<div class="row">
+					<label for="name">* 姓名:</label>
+					<input type="text" id="name" name="name" class="field-large" required="required" placeholder="姓名(必填)" />
+				</div>
+				<div class="row">
+					<label for="email">* 邮箱:</label>
+					<input type="text" id="email" name="email" class="field-large" required="required" placeholder="邮箱(必填)" />
+				</div>
+				<div class="row">
+					<label for="tel">电话:</label>
+					<input type="text" id="tel" name="tel" class="field-large"  placeholder="电话" />
+				</div>
+				<div class="row">
+					<label for="sug">* 意见和建议:</label>
+					<textarea id="sug" name="sug" class="field-large" cols="40" rows="5" required="required" placeholder="意见和建议(必填)"></textarea>
+				</div>
+			</div>
+		</fieldset>
+		<input type="submit" value="SUBMIT" class="btn" />
+	</form>
+</div>
+<a id="copyForbidBtn" href="javascript:">禁止复制粘贴</a>
+
+<script>
+window.onload = function () {
+	var oDiv = document.getElementById('feedback');
+	var enabled = true;
+	var aTxtInput = []; 
+	aTxtInput = getTxtInput(oDiv);
+	aTxtInput.push(oDiv.getElementsByTagName('textarea')[0]);
+	var forbidBtns = document.getElementById('copyForbidBtn');
+
+	forbidBtns.onclick = function () {
+		if (enabled) {
+			for(var i = 0; i < aTxtInput.length; i++){
+			   aTxtInput[i].oncopy = aTxtInput[i].onpaste = function(){
+			        return false;
+			   }
+			}
+			this.innerHTML = '恢复复制粘贴';
+			this.style.backgroundColor = '#ccc';
+			enabled = false;
+		}else{
+			for(var i = 0; i < aTxtInput.length; i++){
+			   aTxtInput[i].oncopy = aTxtInput[i].onpaste = function(){
+			        return true;
+			   }
+			}
+			this.innerHTML = '禁止复制粘贴';
+			this.style.backgroundColor = '#00B4CD';
+			enabled = true;
+		}
+	};
+	
+	function getTxtInput(obj) {
+		var result = [];
+		var aInputs = obj.getElementsByTagName('input');
+		for (var i = 0; i < aInputs.length; i++) {
+			if (aInputs[i].type === 'text') {
+				result.push(aInputs[i]);
+			}
+		}
+		
+		return result;
+	}
+}
+</script>
+</body>
+</html>

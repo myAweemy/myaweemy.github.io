@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8" />
+<title>正在加载缓冲条</title>
+<style>
+body,ul,li{margin:0;padding:0;}
+img{border:0;border-radius:3px;}
+ul{list-style-type:none;}
+#box{width:424px;border:5px solid #94C6DD;overflow:hidden;zoom:1;background-color:#94C6DD;border-radius:5px;margin:10px auto;padding:0 0 3px 3px;}
+#box li,#box li img{float:left;width:100px;height:100px;}
+#box li{margin:6px 6px 0 0;}
+#box li.first{position:relative;}
+#box li.first,#box li.first img{width:312px;height:312px;}
+#box li.first div{position:absolute;top:0;left:0;width:312px;height:312px;display:none;opacity:0.5;filter:alpha(opacity=50);background:#fff url(loading.gif) 50% 50% no-repeat;}
+</style>
+<script type="text/javascript">
+window.onload = function ()
+{
+	var oImg = document.getElementById("box").getElementsByTagName("img");
+	var oDiv = document.getElementsByTagName("div")[0];
+	for (var i = 1; i < oImg.length; i++)
+	{
+		oImg[i].onmouseover = function ()
+		{						
+			var img = new Image();
+			img.src = oImg[0].src = this.src.replace('small','large');
+			oDiv.style.display = "block";
+			img.complete ? oDiv.style.display = "none" : (oImg[0].onload = function() {oDiv.style.display = "none"})
+		}	
+	}
+};
+</script>
+<script async src="http://c.cnzz.com/core.php"></script></head>
+<body style="background-color: rgba(148,198,221,.8);">
+<ul id="box">
+    <li class="first"><img src="images/large3.jpg" alt="图片加载失败"><div></div></li>
+    <li><a href="javascript:;"><img src="images/small1.jpg" alt="图片加载失败"></a></li>
+    <li><a href="javascript:;"><img src="images/small2.jpg" alt="图片加载失败"></a></li>
+    <li><a href="javascript:;"><img src="images/small3.jpg" alt="图片加载失败"></a></li>
+    <li><a href="javascript:;"><img src="images/small4.jpg" alt="图片加载失败"></a></li>
+    <li><a href="javascript:;"><img src="images/small5.jpg" alt="图片加载失败"></a></li>
+    <li><a href="javascript:;"><img src="images/small6.jpg" alt="图片加载失败"></a></li>
+    <li><a href="javascript:;"><img src="images/small7.jpg" alt="图片加载失败"></a></li>
+    <li><a href="javascript:;"><img src="images/small8.jpg" alt="图片加载失败"></a></li>
+    <li><a href="javascript:;"><img src="images/small9.jpg" alt="图片加载失败"></a></li>
+    <li><a href="javascript:;"><img src="images/small10.jpg" alt="图片加载失败"></a></li>
+    <li><a href="javascript:;"><img src="images/small11.jpg" alt="图片加载失败"></a></li>
+</ul>
+</body>
+</html>

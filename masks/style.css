@@ -1,0 +1,29 @@
+form,fieldset,input{padding: 0;margin:0;}
+/*body{background-color: rgba(148,198,221,.8);height: 2000px;}*/
+a{text-align: center;text-decoration: none;}
+#loginWrap{display:none; width: 300px;padding: 10px 25px; background-color: rgba(255,255,255,.8);
+	font-family: simsun, "Microsoft Yahei";border: 1px solid #94C6DD;border-radius: 4px;
+	z-index: 9999;position: absolute;cursor: move;}
+	
+#mask{display: none; width: 100%;height: 500px;position: absolute;left: 0;right: 0;z-index: 9888;background-color:rgba(0,0,0,.6); }
+legend,h2{width: 100%;color: #8B8E95; font-size: 25px;padding: 5px;box-sizing: border-box;
+	text-align: center;}
+#exit{display: block;width: 20px;height: 19px;position: absolute;right: 5px;top: 5px;
+	border: none; background:url(login2.png) -70px -45px no-repeat;cursor: pointer;}
+fieldset{border: none;margin-bottom: 12px;}
+
+.fields{width: 100%;padding: .75em;}
+
+.fields .row{margin: 20px auto;position: relative;}
+
+span{font-size: inherit;display: block; width: 261px; border: 1px solid #099;border-radius: 3px;
+background: url(login.png) left center no-repeat;}
+
+input[type='text']{border: none;width: 230px;height: 36px;border: none;padding-left: 30px;background-color: transparent;}
+
+.user-name{background-position: 2px -63px;}
+.pwd{background-position: 2px -142px;}
+
+.btn{display: block; width: 150px; height: 35px;  border: 1px solid #099; font-family: "Microsoft Yahei" font-size: 22px; margin:0 auto; color: #fff;
+	background-color: #00B4CD;padding: 5px;border-radius: 2px;}
+#show{line-height: 35px;position: absolute;left: 20px;top: 20px;}

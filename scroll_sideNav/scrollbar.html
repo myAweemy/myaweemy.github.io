@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>滚动条</title>
+<style type="text/css">
+*{margin: 0;padding: 0;}
+#scrollbarWrap{width: 15px;height: 500px;background-color: #CCC; position: relative;left: 20px;top: 10px;float: left;border-radius: 6px;}
+#scrollbar{width: 15px;height: 35px;background-color: #39e; position: absolute;border-radius: 6px;}
+#contentWrap{width: 400px;height: 500px;position: relative;float: left; border:5px solid #ccc;padding: 5px;
+	overflow: hidden;background-color: #FFE6A9;}
+#content{width: 400px;position: absolute;padding: 5px;left: 0;top: 0;}
+p{margin: 5px;margin-bottom: 15px;}
+</style>
+
+
+</head>
+<body>
+<h1>这是一个自定义的滚动条，可以拖拽或者使用鼠标滚轮</h1>
+<div style="width: 450px; margin: 50px auto;">
+<div id="contentWrap">
+<div id="content">
+<h2 style="margin-bottom: 20px;">Li urges linking with Germany's industrial strategy</h2>
+<img src="http://www.chinadaily.com.cn/china/images/attachement/jpg/site1/20160409/b083fe96fac218727ab301.jpg" style="width: 199px;height: 145px; float: right;"> 
+
+	<p> China and Switzerland signed five documents on F	riday to boost cooperation in areas including work safetyscience, innovation and low-carbon city construction as the two countries declared the establishment of theiinnovative strategic partnership.</p>
+
+	<p>President Xi Jinping and visiting Swiss President Johann Schneider-Ammann witnessed in Beijing the signing of two memorandums of understanding, between the Chinese cities of Guangzhou and Chengdu and the Swiss Agency for Development and Cooperation as part of a Sino-Swiss low-carbon city project.</p>
+
+	<p>Calling Schneider-Ammann "an old friend of the Chinese people", Xi recalled his meeting with the Swiss president in June when he came to China for the signing ceremony of the China-proposed Asia Infrastructure Investment Bank.</p>
+
+	<p>Xi told his Swiss counterpart that the two countries should work together to establish innovative platforms for enhancing cooperation between enterprises, colleges and institutions.</p>
+
+	<p>Regarding the growth in trade between the two countries, which last year celebrated the 65th anniversary of their diplomatic ties, Xi said, "The daily trade volume is now 26 times what it was annually in the first years after we established diplomatic ties."</p>
+<img src="http://www.chinadaily.com.cn/china/images/attachement/jpg/site1/20160409/b083fe96fac218727ab301.jpg" style="width: 395px;height: 290px; float: right;"> 
+
+	<p>Switzerland is China's seventh-largest trade partner in Europe, and trade volume between the two reached $44.3 billion last year.</p>
+
+	<p>Calling Schneider-Ammann "an old friend of the Chinese people", Xi recalled his meeting with the Swiss president in June when he came to China for the signing ceremony of the China-proposed Asia Infrastructure Investment Bank.</p>
+
+	<p>Xi told his Swiss counterpart that the two countries should work together to establish innovative platforms for enhancing cooperation between enterprises, colleges and institutions.</p>
+
+	<p>Regarding the growth in trade between the two countries, which last year celebrated the 65th anniversary of their diplomatic ties, Xi said, "The daily trade volume is now 26 times what it was annually in the first years after we established diplomatic ties."</p>
+
+	<p>Switzerland is China's seventh-largest trade partner in Europe, and trade volume between the two reached $44.3 billion last year.</p>
+
+	<p>Regarding the growth in trade between the two countries, which last year celebrated the 65th anniversary of their diplomatic ties, Xi said, "The daily trade volume is now 26 times what it was annually in the first years after we established diplomatic ties."</p>
+
+	<p>Switzerland is China's seventh-largest trade partner in Europe, and trade volume between the two reached $44.3 billion last year.</p>
+
+</div>
+</div>
+<div id="scrollbarWrap">
+	<div id="scrollbar"></div>
+</div>
+</div>
+<script type="text/javascript">
+window.onload=function (){
+var scrollbarWrap = document.getElementById('scrollbarWrap');
+var scrollbar = document.getElementById('scrollbar');
+var contentWrap = document.getElementById('contentWrap');
+var content = document.getElementById('content');
+scrollbar.onmousedown = function(ev){
+	var event = ev||event;
+	var disY = event.clientY - scrollbar.offsetTop;
+	
+	var dhOfScroll = scrollbarWrap.offsetHeight - scrollbar.offsetHeight;//滚动条包裹框和滚动条的高度差值
+	var dhOfContent = content.offsetHeight - contentWrap.offsetHeight ;
+	document.onmousemove = mouseMove;
+	function mouseMove(ev){
+		var event = ev||event;
+		//滚动条运动到其包裹框高度百分比，也就是运动到了高度差dh的百分比，用作设置下面内容区位置的top值
+		var scale = scrollbar.offsetTop / dhOfScroll;
+		content.style.top = -dhOfContent * scale + 'px' ;
+		scrollbar.style.top = event.clientY - disY + 'px';
+		limit(dhOfScroll);
+	}
+
+	document.onmouseup = function(ev){
+		document.onmousemove = null;
+		document.onmouseup = null;
+	};
+	return false;
+};
+
+function onMouseWheel(ev) {
+	var event = ev || event;
+	var dhOfScroll = scrollbarWrap.offsetHeight - scrollbar.offsetHeight;//滚动条包裹框和滚动条的高度差值
+	var dhOfContent = content.offsetHeight - contentWrap.offsetHeight ;
+	var scale = scrollbar.offsetTop / dhOfScroll;
+	content.style.top = -dhOfContent * scale + 'px' ;
+	var scrollDown = event.wheelDelta?event.wheelDelta<0:event.detail>0;
+	if (scrollDown) {
+		scrollbar.style.top = scrollbar.offsetTop + 5 + 'px';
+	}else{
+		scrollbar.style.top = scrollbar.offsetTop - 5 + 'px';
+	}
+	limit(dhOfScroll);
+	
+}
+
+myAttachEv(scrollbarWrap,'mousewheel',onMouseWheel);
+myAttachEv(scrollbarWrap,'DOMMouseScroll',onMouseWheel);
+myAttachEv(contentWrap,'mousewheel',onMouseWheel);
+myAttachEv(contentWrap,'DOMMouseScroll',onMouseWheel);
+
+function myAttachEv(obj,ev,fn) {
+	if (obj.attachEvent) {
+		obj.attachEvent( 'on' + ev, fn);
+	}else{
+		obj.addEventListener(ev,fn,false);//false：不需要回调
+	}
+}
+
+function limit(dhOfScroll) {
+	if (scrollbar.offsetTop < 0) {
+		scrollbar.style.top = 0;
+	}
+	else if (scrollbar.offsetTop > dhOfScroll) {
+		scrollbar.style.top = dhOfScroll + 'px';
+	}
+}
+
+};
+</script>
+</body>
+</html>

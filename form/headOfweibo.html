@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>仿微博 发微博</title>
+
+<link rel="icon" sizes="any" type="image/x-icon"  href="favicon.ico">
+
+<style>
+body,div{margin: 0;padding: 0;}
+a{text-decoration: none;color: #fff;font-size: 15px;display: block;position: absolute;}
+#wrap{width: 580px;height: 130px;margin: 0 auto; padding: 15px 10px 10px 10px; background: url(free.jpg) left top no-repeat;overflow: hidden;position: relative;}	
+a.des{height: 14px;right: 8px;top: 20px;color: #EB7350;font-size: 12px;}
+.num,.num-error{display: none; position: absolute; height: 14px;right: 15px;top: 15px;color: #666;font-size: 12px;}
+.num span,.num-error span{font-weight: 700;font-size: 22px;font-style: italic;font-family: Constantia, Georgia;}
+.num-error span{color: #FF0000;}
+.input{margin-top: 32px;}
+.txt{display: block; width: 568px;height: 66px;resize: none;border: 1px solid #ccc; border-radius: 2px;padding: 3px;font-size: 14px;word-wrap: break-word;line-height: 18px;overflow-y: auto;overflow-x: hidden;}
+.txt:focus{border-color: #FA7D3C;}
+.submit{ width: 82px;height: 30px;line-height: 30px;text-align: center; background-color: #FF8140;opacity: 0.5;filter: alpha(opacity:50); border: 0;border-radius: 3px;right: 12px;bottom: 0;}
+</style>
+
+</head>
+<body>
+<div id="wrap">
+	<div class="num">
+		还可以输入
+		<span></span>
+		字
+	</div>
+	<div class="num-error">
+		超出
+		<span></span>
+		字
+	</div>
+	<a class="des" href="#">会员可以发布超过140字的微博啦，开通会员立即体验 》</a>
+	<div class="input">
+		<textarea class="txt" rows="4" cols="40"></textarea>
+	</div>
+	<a class="submit" href="#">发布</a>
+</div>
+<script type="text/javascript" src="getByClass.js"></script>
+<script>
+window.onload = function () {
+	var limit = 140;//最多输入的字数
+	var numOfLeft = 140;//剩余的字数
+	var wrap = document.getElementById('wrap');
+	var txtarea = getByClass(wrap,'txt')[0];
+	var num = getByClass(wrap,'num')[0];
+	var leftNum = num.getElementsByTagName('span')[0];
+	var num_error = getByClass(wrap,'num-error')[0];
+	var errorNum = num_error.getElementsByTagName('span')[0];
+	var des = getByClass(wrap,'des')[0];
+	var btnSub = getByClass(wrap,'submit')[0];
+
+	txtarea.onclick = function(){//点击进输入框
+		des.style.display = 'none';
+		if (numOfLeft > 0) {
+			num.style.display = 'block';
+			leftNum.innerHTML = numOfLeft;//设置字数
+		}
+		txtarea.onpaste = txtarea.oninput = function(){//正在输入时的处理，注意用户可能的粘贴行为
+			//发现新浪微博将一个汉字的长度作为两个字母的长度，用正则替换一下
+			numOfLeft = limit - strLen(txtarea.value);
+			if (txtarea.value.length > 0) {//输入框内有文字时就把发布按钮透明度还原为1，否则仍为0.5
+				btnSub.style.opacity = 1;
+				btnSub.style.filter = 'alpha(opacity:100)';
+
+				if (numOfLeft >= 0) {//判断输入框里有无文字，分别对超出和没有超出两种情况进行处理
+					leftNum.innerHTML = numOfLeft;//设置字数
+					num.style.display = 'block';
+					num_error.style.display = 'none';
+				}else{
+					errorNum.innerHTML = numOfLeft * -1;//设置字数
+					num.style.display = 'none';
+					num_error.style.display = 'block';
+				}
+			}else{
+				btnSub.style.opacity = 0.5;
+				btnSub.style.filter = 'alpha(opacity:50)';
+			}
+		};
+		
+	};
+	txtarea.onblur = function(){//焦点移出时
+		if (txtarea.value.length == 0){
+			des.style.display = 'block';
+			num.style.display = 'none';
+		} 
+	};
+	function strLen(str){//处理汉字，将字符串内的汉字替换为两个英文字符
+        return String(str).replace('^\x00-\xff','aa').length;
+    }
+};
+</script>
+</body>
+</html>

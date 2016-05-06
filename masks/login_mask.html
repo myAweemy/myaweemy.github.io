@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>登录和遮罩</title>
+<link rel="icon" sizes="any" type="image/x-icon" href="i.ico">
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body style="height: 2000px;">
+<div id="loginWrap">
+	<span id="exit"></span>
+	<form method="post" action="script.php">
+		<fieldset>
+			<legend>登 录</legend>
+			<div class="fields">
+				<div class="row">
+					<span class="user-name">
+						<input type="text" id="name" name="name"  required="required" placeholder="帐号" />
+					</span>
+				</div>
+				<div class="row">
+					<span class="pwd">
+						<input type="text" id="email" name="email"  required="required" placeholder="登录密码" />
+					</span>
+				</div>
+			</div>
+		</fieldset>
+		<input type="submit" value="提交" class="btn" />
+	</form>
+</div>
+<a id="show" class="btn" href="javascript:">登录</a>
+<script type="text/javascript" src="Drag.js"></script>
+<script>
+window.onload = function () {
+	var btnShow = document.getElementById('show');
+	var loginWrap = document.getElementById('loginWrap');
+	var exitBtn = document.getElementById('exit');
+
+	btnShow.onclick = function () {
+		var scrollWidth = document.documentElement.scrollWidth;
+		var scrollHeight = document.documentElement.scrollHeight;
+		var screenWidth = document.documentElement.clientWidth;
+		var screenHeight = document.documentElement.clientHeight;
+		loginWrap.style.display = 'block';
+		loginWrap.style.left = (screenWidth - loginWrap.offsetWidth)/2 + 'px';
+		loginWrap.style.top = (screenHeight - loginWrap.offsetHeight)/2 + 'px';
+		var mask = document.createElement('div');
+		mask.id = 'mask';
+		document.body.appendChild(mask);
+		mask.style.display = 'block';
+		mask.style.width = scrollWidth +'px' ;
+		mask.style.height = scrollHeight +'px' ;
+
+		exit.onclick = mask.onclick = function(){
+			loginWrap.style.display = 'none';
+			document.body.removeChild(mask);
+		};
+	};
+
+	new Drag('loginWrap');
+};
+</script>
+</body>
+</html>

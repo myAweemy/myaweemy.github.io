@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>滑动导航效果</title>
+<style>
+body,div,ul,li,a,span{margin: 0;padding: 0;font-family: "Microsoft Yahei";}
+body{background-color: rgba(148,198,221,.8);}
+ul{list-style: none;}
+a,span{display: block; color: #999;text-decoration: none;font-size: 20px;}
+#wrap{width: 700px;height: 100px;margin: 200px auto;}
+li{float: left;width: 200px;height:100px;line-height: 100px; position: relative; margin:15px;border: 1px solid #94C6DD;text-align: center;border-radius: 5px;background-color: rgba(255,255,255,.8);color:#099;}
+li div{position: absolute; left:-1px;background-color: rgba(0,0,0,.5);border-radius: 5px;overflow: hidden;}
+li .imgWrap{bottom: 100px;height: 150px;width: 0;}
+li .information{top: 100px;width: 200px;height: 0;}
+li .information a,span{color: #fff; padding: 20px 10px;}
+li .imgWrap img{width: 100%;}
+</style>
+</head>
+<body>
+<div id="wrap" >
+	<ul>
+		<li>鼠标放上来吧<div class="imgWrap"><a href="#"><img src="source.jpg"></a></div><div class="information"><a href="#">这是描述性文字</a></div></li>	
+		<li>鼠标放上来吧<div class="imgWrap"><a href="#"><img src="source.jpg"></a></div><div class="information"><a href="#">这是描述性文字</a></div></li>
+		<li>鼠标放上来吧<div class="imgWrap"><a href="#"><img src="source.jpg"></a></div><div class="information"><a href="#">这是描述性文字</a></div></li>	
+	</ul>
+</div>
+
+<script type="text/javascript">
+window.onload = function () {
+	var wrap = document.getElementById('wrap');
+	var Lis = wrap.getElementsByTagName('li');
+	for (var i = 0; i < Lis.length; i++) {
+		Lis[i].onmouseover = function () {
+			qChangeSize(getElementsByClassname(this,'imgWrap')[0],'width',200);
+			qChangeSize(getElementsByClassname(this,'information')[0],'height',100);	
+		};
+
+		Lis[i].onmouseout = function () {
+			qChangeSize(getElementsByClassname(this,'imgWrap')[0],'width',0);
+			qChangeSize(getElementsByClassname(this,'information')[0],'height',0);
+		};
+	}
+
+};
+
+function qChangeSize(obj,attr,target) {//接受'width'或'height'作为参数，target:目标值
+	var speed = 0,nowValue = obj.offsetHeight;
+	var upperAttr = null;
+	//检查并改变参数attr的首字母，供offsetXXX使用
+	upperAttr = (attr === 'height')? 'Height' : 'Width';
+	clearInterval(obj.timer);
+	obj.timer = setInterval(function(){
+		speed += (target-obj['offset' + upperAttr])/5;
+		speed*=0.7;
+		nowValue+=speed;
+		if (nowValue < 0) { nowValue = 0; }//宽或高不能小于零，若小于0则置为0
+		obj.style[attr] = nowValue + 'px';
+		if(Math.abs(speed)<1 &&  Math.abs(target - obj['offset' + upperAttr]) < 1) 
+		{
+			obj['offset' + upperAttr] = target ;
+			clearInterval(obj.timer);
+			//alert('clear');检查定时器是否已经关闭
+		}
+	},30);
+}
+
+function qChangePos(obj,attr,target) {//具体控制弹性运动的函数attr取值'top' or 'left';target:目标值
+	var speed = 0,nowValue = obj.offsetLeft;
+	var upperAttr = null;
+	//检查并改变参数attr的首字母，供offsetXXX使用
+	upperAttr = (attr === 'top')? 'Top' : 'Left';
+	clearInterval(obj.timer);
+	obj.timer = setInterval(function(){
+		speed += (target-obj['offset' + upperAttr])/5;//使速度变化，变速运动
+		speed*=0.7;
+		nowValue+=speed;//speed会有误差，使误差积累到变量left上
+		
+		if(Math.abs(speed)<1 &&  Math.abs(target - obj['offset' + upperAttr]) < 1) //当速度足够小而且距离足够近时，关闭定时器
+		{
+			obj['offset' + upperAttr] = target ;//如果这时候离目标点还有些距离，那么距离必然不会很大，手动移动到目标点即可
+			clearInterval(obj.timer);
+		}
+		else{
+			obj.style[attr] = nowValue + 'px';
+		}			
+	},30);
+}
+
+function getElementsByClassname(obj,cName) {
+	var result = [];
+	var all = obj.getElementsByTagName('*');
+	for (var i = 0; i < all.length; i++) {
+		if (all[i].className == cName) {
+			result.push(all[i]);
+		}	
+	}
+	return result;
+}
+</script>
+</body>
+</html>

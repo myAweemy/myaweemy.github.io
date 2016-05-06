@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>放大镜</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+<script type="text/javascript">
+window.onload = function(){
+	var ulSmall= document.getElementsByTagName('ul')[0];
+	var aLis = ulSmall.getElementsByTagName('li');
+	var aImgs = new Array();
+	var wrap = document.getElementById('wrap');
+	var imgOfWrap = wrap.getElementsByTagName('img')[0];
+	var screen = null;
+	for (var i = 0; i < aLis.length; i++) {
+		aImgs.push(aLis[i].getElementsByTagName('img')[0]);
+	}
+	for (var i = 0; i < aLis.length; i++) {
+		aLis[i].index = i;
+		aLis[i].onmouseover = function(){
+			imgOfWrap.src = aImgs[this.index].src;
+		};
+	}
+	wrap.onmouseover = function(ev){
+		screen = document.createElement('div');
+		screen.className = 'screen';
+		screen.style.background = 'url('+imgOfWrap.src+')';
+		screen.style.backgroundRepeat = 'no-repeat';
+		screen.style.display = 'block';
+		document.body.appendChild(screen);
+		wrap.onmousemove = function(ev){
+			var event = ev || event;
+			var disX = event.clientX - wrap.offsetLeft;
+			var disY = event.clientY - wrap.offsetTop;
+			var scaleX = disX/wrap.offsetWidth;
+			var scaleY = disY/wrap.offsetHeight;
+			var x = -1920 * scaleX +260 ;
+			var y = -1200 * scaleY +160 ;
+			if (x>0) {x=0;}
+			else if(x<-1320){x=-1320;}
+			if (y>0) {y=0;}
+			else if(y<-840){y=-840}
+			screen.style.backgroundPosition = x + 'px' + ' ' + y + 'px';
+		};
+	};
+	wrap.onmouseout = function(){
+		document.body.removeChild(screen);//没有removeElement这个方法
+	};
+};
+
+</script>
+</head>
+<body>
+	<div id="wrap"><img src="images/1.jpg"></div>
+	<ul>
+		<li><img src="images/1.jpg"></li>
+		<li><img src="images/2.jpg"></li>
+		<li><img src="images/3.jpg"></li>
+	</ul>
+</body>
+</html>

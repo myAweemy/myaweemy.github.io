@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>控制输入框只能输入数字，方向键，backspace</title>
+<link rel="stylesheet" type="text/css" href="styleForForms.css">
+</head>
+<body>
+<div id="feedback">
+	<form method="post" action="script.php">
+		<fieldset>
+			<legend>FEEDBACK</legend>
+			<div class="fields">
+				<div class="row">
+					<label for="name">* 姓名:</label>
+					<input type="text" id="name" name="name" class="field-large" required="required" placeholder="姓名(必填)" />
+				</div>
+				<div class="row">
+					<label for="email">* 邮箱:</label>
+					<input type="text" id="email" name="email" class="field-large" required="required" placeholder="邮箱(必填)" />
+				</div>
+				<div class="row">
+					<span class="forbid" style="width: auto;right: -220px;">只能输入数字,方向键，backspace</span>
+					<label for="tel">电话:</label>
+					<input type="text" id="tel" name="tel" class="field-large"  placeholder="电话" />
+				</div>
+				<div class="row">
+					<label for="sug">* 意见和建议:</label>
+					<textarea id="sug" name="sug" class="field-large" cols="40" rows="5" required="required" placeholder="意见和建议(必填)"></textarea>
+				</div>
+			</div>
+		</fieldset>
+		<input type="submit" value="SUBMIT" class="btn" />
+	</form>
+</div>
+
+<script>
+window.onload = function () {
+	var oDiv = document.getElementById('feedback');
+	var enabled = true;
+	var aTxtInput = []; 
+	aTxtInput = getTxtInput(oDiv);
+	aTxtInput.push(oDiv.getElementsByTagName('textarea')[0]);
+	inputControl(aTxtInput[2]);
+	
+	function getTxtInput(obj) {
+		var result = [];
+		var aInputs = obj.getElementsByTagName('input');
+		for (var i = 0; i < aInputs.length; i++) {
+			if (aInputs[i].type === 'text') {
+				result.push(aInputs[i]);
+			}
+		}
+		
+		return result;
+	}
+
+	function inputControl(obj) {//控制键盘的输入，除了数字、左右键、删除键之外都不能输入
+
+		obj.onkeydown = function (ev) {
+			var event = ev||event;
+			if(!(event.keyCode>=48&&event.keyCode<=57) && event.keyCode != 8 &&event.keyCode!=37 &&event.keyCode!=39)
+				return false;
+		};
+		obj.onkeyup = function(){
+			var reg = /^[0-9]*$/;
+	        if (reg.test(obj.value)) {
+	        } 
+	        else {
+	            obj.value = '';
+	        }
+		};
+	}	
+}
+</script>
+</body>
+</html>

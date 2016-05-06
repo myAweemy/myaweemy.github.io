@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>靠边吸附</title>
+<link rel="icon" sizes="any" type="image/x-icon" href="i.ico">
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body style="margin: 0;padding: 0;">
+<div id="loginWrap">
+	<span id="exit"></span>
+	<form method="post" action="script.php">
+		<fieldset>
+			<legend>登 录</legend>
+			<div class="fields">
+				<div class="row">
+					<span class="user-name">
+						<input type="text" id="name" name="name"  required="required" placeholder="帐号" />
+					</span>
+				</div>
+				<div class="row">
+					<span class="pwd">
+						<input type="text" id="email" name="email"  required="required" placeholder="登录密码" />
+					</span>
+				</div>
+			</div>
+		</fieldset>
+		<input type="submit" value="提交" class="btn" />
+	</form>
+</div>
+<a id="show" class="btn" href="javascript:">登录</a>
+<script type="text/javascript" src="Drag.js"></script>
+<script>
+window.onload = function () {
+	var btnShow = document.getElementById('show');
+	var loginWrap = document.getElementById('loginWrap');
+	var exitBtn = document.getElementById('exit');
+
+	btnShow.onclick = function () {
+		var scrollWidth = document.documentElement.scrollWidth;
+		var scrollHeight = document.documentElement.scrollHeight;
+		var screenWidth = document.documentElement.clientWidth;
+		var screenHeight = document.documentElement.clientHeight;
+		loginWrap.style.display = 'block';
+		loginWrap.style.left = (screenWidth - loginWrap.offsetWidth)/2 + 'px';
+		loginWrap.style.top = (screenHeight - loginWrap.offsetHeight)/2 + 'px';
+		var mask = document.createElement('div');
+		mask.id = 'mask';
+		document.body.appendChild(mask);
+		mask.style.display = 'block';
+		mask.style.width = screenWidth +'px' ;
+		mask.style.height = screenHeight +'px' ;
+
+		exit.onclick = mask.onclick = function(){
+			loginWrap.style.display = 'none';
+			document.body.removeChild(mask);
+		};
+	};
+
+	new limitedDrag('loginWrap');
+};
+function limitedDrag(id) {
+	Drag.call(this,id);
+}
+
+for(var i in Drag.prototype){
+	limitedDrag.prototype[i] = Drag.prototype[i];
+}
+
+limitedDrag.prototype.mouseMove = function(ev) {
+	var event= ev || event;
+	var disToLeft=event.clientX-this.disX;
+	var disToTop=event.clientY-this.disY;
+	
+	if(disToLeft < 50)
+	{
+		disToLeft = 0;
+	}
+	else if(disToLeft > document.documentElement.clientWidth - this.box.offsetWidth - 50)
+	{
+		disToLeft = document.documentElement.clientWidth - this.box.offsetWidth;
+	}
+
+	if(disToTop > document.documentElement.clientHeight - this.box.offsetHeight - 50)
+	{
+		disToTop = document.documentElement.clientHeight - this.box.offsetHeight;
+	}
+	else if(disToTop < 50){
+		disToTop = 0;
+	}
+	
+	this.box.style.left = disToLeft + 'px';
+	this.box.style.top = disToTop + 'px';
+};
+
+</script>
+</body>
+</html>
+
+
+

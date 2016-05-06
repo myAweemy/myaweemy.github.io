@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>禁止输入</title>
+<link rel="stylesheet" type="text/css" href="styleForForms.css">
+</head>
+<body>
+<div id="feedback">
+	<form method="post" action="script.php">
+		<fieldset>
+			<legend>FEEDBACK</legend>
+			<div class="fields">
+				<div class="row">
+					<label for="name">* 姓名:</label>
+					<input type="text" id="name" name="name" class="field-large" required="required" placeholder="姓名(必填)" />
+				</div>
+				<div class="row">
+					<label for="email">* 邮箱:</label>
+					<input type="text" id="email" name="email" class="field-large" required="required" placeholder="邮箱(必填)" />
+				</div>
+				<div class="row">
+					<label for="tel">电话:</label>
+					<input type="text" id="tel" name="tel" class="field-large"  placeholder="电话" />
+				</div>
+				<div class="row">
+					<a class="forbid"  href="#">禁止</a>
+					<label for="sug">* 意见和建议:</label>
+					<textarea id="sug" name="sug" class="field-large" cols="40" rows="5" required="required" placeholder="意见和建议(必填)"></textarea>
+				</div>
+			</div>
+		</fieldset>
+		<input type="submit" value="SUBMIT" class="btn" />
+	</form>
+</div>
+
+<script>
+window.onload = function () {
+	var oDiv = document.getElementById('feedback');
+
+	var aTxtInput = []; 
+	aTxtInput = getTxtInput(oDiv);
+	aTxtInput.push(oDiv.getElementsByTagName('textarea')[0]);
+	var aBtns = addBtns();
+
+	for (var i = 0; i < aBtns.length; i++) {
+		aBtns[i].index = i;
+		aBtns[i].disabled = false;
+		aBtns[i].onclick = function () {
+			if (this.disabled == false) {
+				aTxtInput[this.index].disabled = true;
+				this.disabled = true;
+				this.innerHTML = '恢复';
+			}else{
+				aTxtInput[this.index].disabled = false;
+				this.disabled = false;
+				this.innerHTML = '禁止';
+			}
+		}
+	}
+
+	function getTxtInput(obj) {
+		var result = [];
+		var aInputs = obj.getElementsByTagName('input');
+		for (var i = 0; i < aInputs.length; i++) {
+			if (aInputs[i].type === 'text') {
+				result.push(aInputs[i]);
+			}
+		}
+		
+		return result;
+	}
+
+	function addBtns() {
+		var result = [];
+		for (var i = 0; i < aTxtInput.length; i++) {
+			var oBtn = document.createElement('a');
+			oBtn.href = 'javascript:';
+			oBtn.className = 'forbid';
+			oBtn.innerHTML = '禁止';
+			aTxtInput[i].parentNode.appendChild(oBtn);
+			result.push(oBtn);
+		}
+		return result;
+	}
+}
+</script>
+</body>
+</html>

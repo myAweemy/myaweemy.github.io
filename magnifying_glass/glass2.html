@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>放大镜</title>
+<style>
+body,ul,li,div{margin: 0;padding: 0;}
+body{background-color: #ddd;}
+ul{list-style: none;width: 252px;height: 50px;border: 2px solid #fff;margin: 15px auto;position: absolute;top: 450px;left: 254px;}
+ul li{width: 80px;height: 100%;margin: 2px; float: left;}
+ul li img{width: 100%;}
+#wrap{width: 400px;height: 240px;border: 2px solid #fff;overflow: hidden;position: absolute;top: 200px;left: 200px;}
+#wrap #mask{width: 100%;height: 100%;position: absolute;z-index: 3;}
+#wrap img{width: 100%;z-index: 1;}
+.screen{position: absolute;width: 600px;height: 360px;background-color: #ccc;right: 100px;top: 180px;display: none;overflow: hidden; border: 1px solid #ddd;}
+#flyer{width: 50px;height: 50px;position: absolute;background-color: #000;opacity: 0.5;filter: alpha(opacity:50);display: none;z-index: 2;}
+</style>
+<script type="text/javascript">
+window.onload = function(){
+	var flyer = document.getElementById('flyer');
+	var mask = document.getElementById('mask');
+	var ulSmall= document.getElementsByTagName('ul')[0];
+	var aLis = ulSmall.getElementsByTagName('li');
+	var aImgs = new Array();
+	var wrap = document.getElementById('wrap');
+	var imgOfWrap = wrap.getElementsByTagName('img')[0];
+	var screen = null;
+	for (var i = 0; i < aLis.length; i++) {
+		aImgs.push(aLis[i].getElementsByTagName('img')[0]);
+	}
+	for (var i = 0; i < aLis.length; i++) {
+		aLis[i].index = i;
+		aLis[i].onmouseover = function(){
+			imgOfWrap.src = aImgs[this.index].src;
+		};
+	}
+	wrap.onmouseover = function(ev){
+		screen = document.createElement('div');
+		screen.className = 'screen';
+		screen.style.background = 'url('+imgOfWrap.src+')';
+		screen.style.backgroundRepeat = 'no-repeat';
+		screen.style.display = 'block';
+		document.body.appendChild(screen);
+
+		wrap.onmousemove = function(ev){
+			
+
+			var event = ev || event;
+			var disX = event.clientX - wrap.offsetLeft;
+			var disY = event.clientY - wrap.offsetTop;
+			var scaleX = disX/wrap.offsetWidth;
+			var scaleY = disY/wrap.offsetHeight;
+			var x = -1920 * scaleX +260 ;
+			var y = -1200 * scaleY +160 ;
+			if (x>0) {x=0;}
+			else if(x<-1320){x=-1320;}
+			if (y>0) {y=0;}
+			else if(y<-840){y=-840}
+			screen.style.backgroundPosition = x + 'px' + ' ' + y + 'px';
+		};
+	};
+	wrap.onmouseout = function(){
+		document.body.removeChild(screen);//没有removeElement这个方法
+	};
+	mask.onmousemove = function(ev){
+		var event = ev || event;
+		flyer.style.display = 'block';
+		var TopOfFlyer = event.clientY - wrap.offsetTop - flyer.offsetHeight/2;
+		var LeftOfFlyer = event.clientX - wrap.offsetLeft - flyer.offsetWidth/2;
+		if (TopOfFlyer < 0) {
+			TopOfFlyer = 0;
+		}else if(TopOfFlyer > wrap.offsetHeight-flyer.offsetHeight){
+			TopOfFlyer = wrap.offsetHeight-flyer.offsetHeight;
+		}
+
+		if (LeftOfFlyer < 0) {
+			LeftOfFlyer = 0;
+		}else if(LeftOfFlyer > wrap.offsetWidth-flyer.offsetWidth){
+			LeftOfFlyer = wrap.offsetWidth-flyer.offsetWidth;
+		}
+		flyer.style.top = TopOfFlyer +'px';
+		flyer.style.left = LeftOfFlyer +'px';
+	};
+	mask.onmouseout = function(ev){
+		flyer.style.display = 'none';
+	};
+};
+
+</script>
+</head>
+<body>
+	
+	<div id="wrap"><div id="mask"><div id="flyer"></div></div> <img src="images/1.jpg"></div>
+	<ul>
+		<li><img src="images/1.jpg"></li>
+		<li><img src="images/2.jpg"></li>
+		<li><img src="images/3.jpg"></li>
+	</ul>
+</body>
+</html>

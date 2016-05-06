@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>辅助标记的拖曳</title>
+<link rel="icon" sizes="any" type="image/x-icon" href="i.ico">
+<link rel="stylesheet" type="text/css" href="style.css">
+<style>
+.box{border: 2px solid #94C6DD;position: absolute;display: block;border-radius: 2px;color: red;font-size: 25px;}	
+#drager{cursor: move;}
+#loginWrap{cursor: default;}
+</style>
+</head>
+<body style="margin: 0;padding: 0;">
+<div id="loginWrap">
+	<span id="exit"></span>
+	<form method="post" action="script.php">
+		<fieldset>
+			<legend id="drager">登 录</legend>
+			<div class="fields">
+				<div class="row">
+					<span class="user-name">
+						<input type="text" id="name" name="name"  required="required" placeholder="帐号" />
+					</span>
+				</div>
+				<div class="row">
+					<span class="pwd">
+						<input type="text" id="email" name="email"  required="required" placeholder="登录密码" />
+					</span>
+				</div>
+			</div>
+		</fieldset>
+		<input type="submit" value="提交" class="btn" />
+	</form>
+</div>
+<a id="show" class="btn" href="javascript:">登录</a>
+
+<script>
+window.onload = function () {
+	var btnShow = document.getElementById('show');
+	var loginWrap = document.getElementById('loginWrap');
+	var exitBtn = document.getElementById('exit');
+	var drager = document.getElementById('drager');
+
+	btnShow.onclick = function () {
+		var scrollWidth = document.documentElement.scrollWidth;
+		var scrollHeight = document.documentElement.scrollHeight;
+		var screenWidth = document.documentElement.clientWidth;
+		var screenHeight = document.documentElement.clientHeight;
+		loginWrap.style.display = 'block';
+		loginWrap.style.left = (screenWidth - loginWrap.offsetWidth)/2 + 'px';
+		loginWrap.style.top = (screenHeight - loginWrap.offsetHeight)/2 + 'px';
+		var mask = document.createElement('div');
+		mask.id = 'mask';
+		document.body.appendChild(mask);
+		mask.style.display = 'block';
+		mask.style.width = screenWidth +'px' ;
+		mask.style.height = screenHeight +'px' ;
+
+		exit.onclick = mask.onclick = function(){
+			loginWrap.style.display = 'none';
+			document.body.removeChild(mask);
+		};
+	};
+
+	drager.onmousedown = function(ev){
+		var event = ev||event;
+		var disX = event.clientX - loginWrap.offsetLeft;
+		var disY = event.clientY - loginWrap.offsetTop;
+
+		var box = document.createElement('div');//点击事件后生成辅助框，下面设置辅助框的属性
+		box.style.width = loginWrap.offsetWidth - 2 + 'px';
+		box.style.height = loginWrap.offsetHeight -2 + 'px';
+		box.style.left = loginWrap.offsetLeft + 'px';
+		box.style.top = loginWrap.offsetTop + 'px';
+		//box.className = 'box';鼠标点击后就使box提示框出现
+		document.body.appendChild(box);//document.body就是页面的body元素
+		
+		document.onmousemove = mouseMove;
+		function mouseMove(ev){
+			box.className = 'box';//在鼠标开始移动的时候才让辅助框出现，感觉这样比较好。当然也可以在鼠标点击后就使之出现，可以起到一定的提示作用
+			box.innerHTML = '这是一个辅助框，松开鼠标左键看看效果';
+			var event= ev || event;
+			var disToLeft = event.clientX - disX;
+			var disToTop = event.clientY - disY;
+			
+			if(disToLeft < 0)
+			{
+				disToLeft = 0;
+			}
+			else if(disToLeft > document.documentElement.clientWidth - box.offsetWidth)
+			{
+				disToLeft = document.documentElement.clientWidth - box.offsetWidth;
+			}
+
+			if(disToTop > document.documentElement.clientHeight - box.offsetHeight)
+			{
+				disToTop = document.documentElement.clientHeight - box.offsetHeight;
+			}
+			else if(disToTop < 0){
+				disToTop = 0;
+			}
+
+			box.style.left = disToLeft + 'px';
+			box.style.top = disToTop + 'px';
+		}
+
+		document.onmouseup = function(ev){
+			loginWrap.style.left = box.offsetLeft + 'px';
+			loginWrap.style.top = box.offsetTop + 'px';
+			document.body.removeChild(box);//在loginWrap框位置改变为目标位置后将辅助框删除
+			document.onmousemove = null;
+			document.onmouseup = null;
+		};
+		return false;
+	};
+};
+</script>
+</body>
+</html>
+
+
+

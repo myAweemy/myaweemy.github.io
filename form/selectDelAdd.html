@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>动态操作下拉选项</title>
+<style>
+body,div,input,select,option{margin: 0;padding: 0;}
+body{background-color: #066;color: #fff;}
+a{color: #fff;display: inline-block;text-decoration: none;margin-left: 10px;}
+.wrap{ width:16em; margin: 0 auto;border: 1px solid #ccc;}
+.des{width：400px; margin: 20px auto;text-align: center; font-family: "Microsoft Yahei"}
+input,select{ width: 6em;border: 1px solid #066;}
+a{display: inline-block;padding: 2px 5px;background-color:#E9B56E; border-radius: 3px;font-size: 12px;}
+</style>
+
+<body>
+<div class="des">选择你最爱吃的水果，如果列表里没有的话你可以自己添加</div>
+<div class="wrap">
+    <div class="mb10">
+        <input id="item" type="text" /><a id="addItem" href="javascript:;">点击添加选项</a>
+    </div>
+    <select id="fruits" name="">
+        <option value="" selected="selected">苹果</option>
+        <option value="">香蕉</option>
+        <option value="">梨</option>
+    </select>
+    <a id="delItem" href="javascript:;">删除当前选项</a>
+</div>
+
+<script>
+window.onload = function(){
+    var addedItem = document.getElementById('item');
+    var addBtn = document.getElementById('addItem');
+    var delBtn = document.getElementById('delItem');
+    var fruits = document.getElementById('fruits');
+    
+    addBtn.onclick = function(){
+        var val = isEmpty(addedItem);
+        if(val){
+            fruits.options.add(new Option(val, val));
+            fruits.multiple="multiple";//添加后打开select增强用户体验
+            newSelect();//手动选中和标记新添加的项，增强用户体验
+            rolloffSelect();//手动收起select，增强用户体验
+        }
+    };
+    delBtn.onclick = function(){
+        var i = fruits.selectedIndex;
+        fruits.options.remove(i);
+        fruits.multiple="multiple";
+    };
+
+    function rolloffSelect() {//手动收起select
+        var options = document.getElementsByTagName('option');
+        for (var i = 0; i < options.length; i++) {
+            options[i].onclick = function(){
+                 fruits.removeAttribute("multiple");
+            };
+        }
+    }
+    function newSelect() {//手动选中和标记新添加的项
+        var options = document.getElementsByTagName('option');
+        for (var i = 0; i < options.length; i++) {
+            options[i].removeAttribute('selected');
+        }
+       options[options.length-1].selected = 'selected';
+    }
+};
+function isEmpty(obj){//判断用户是否输入空值
+    if(obj.value.length < 1){
+        alert('您没有输入任何东东哦');
+        return false;
+    }
+    return obj.value;
+}
+</script>
+</body>
+</html>

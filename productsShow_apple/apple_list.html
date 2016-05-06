@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>appppppple</title>
+<style type="text/css">
+*{margin:0;padding:0;}
+body{background:#EBEBED;}
+img{border:none;display:block;}
+li{list-style:none;}
+.page{-webkit-box-shadow: rgba(0,0,0,0.3) 0 1px 3px;-moz-box-shadow: rgba(0,0,0,0.3) 0 1px 3px;box-shadow: rgba(0,0,0,0.3) 0 1px 3px; background:#FFFFFF;border-color: #E5E5E5 #DBDBDB #D2D2D2;border-style: solid;border-width: 1px;margin:5px auto 0;width:980px;}
+.box{overflow: hidden;position: relative;width: 820px;z-index: 0;height:158px;margin: 0 70px;}
+.box_head{width: 1680px;	}
+.box_head li{width:140px; float:left;text-align: center;}
+a{text-decoration:none;font: 12px/18px "Lucida Grande","Lucida Sans Unicode",Helvetica,Arial,Verdana,sans-serif;color:#7F7F7F;}
+.box_head li a:hover{color:#333;}
+.box_foot{height:30px; text-align:center; background:#fff; overflow:hidden;
+	background:url(images/nav_bg.png) no-repeat 0 0;
+	background:-moz-linear-gradient(center bottom, rgba(223,223,223,1) 0%, rgba(242,242,242,1) 66%, rgba(242,242,242,1) 90%, rgba(230,230,230,1) 93%, rgba(190,190,190,1) 96%, rgba(150,150,150,1) 100%);
+	background:-webkit-gradient(linear, left bottom, left top, from(rgba(223,223,223,1)), color-stop(66%, rgba(242,242,242,1)), color-stop(90%, rgba(242,242,242,1)), color-stop(93%, rgba(230,230,230,1)), color-stop(96%, rgba(210,210,210,1)), to(rgba(140,140,140,1)));
+	border-bottom:1px solid #ebebeb;position:relative;}
+#triangle{background: url(images/triangle.gif) no-repeat scroll 0 0;display: block;height: 8px;margin: 0 0 -8px -7px;position: absolute;left: 424px;width: 15px;
+}
+.box_foot a{display: inline-block;margin: 0 15px;padding: 8px 0 6px;cursor:pointer;
+	text-shadow: 0 1px 0 #FFFFFF;}
+.box_foot .show{cursor: default;color:#2B2B2B;	}
+.box_foot a:hover{color:#000;}
+.miaov{height:36px;line-height:26px;text-align:center;position:fixed;_position:absolute;bottom:0;width:100%;}
+.miaov a{color:#777;font-size:16px;}
+.miaov a:hover{color:#555;}
+.head{height:36px;width:980px;overflow:hidden;margin:0 auto;}
+.head .left{float:left;}
+.head .right{float:right;}
+.head a{line-height:36px;color:#777;}
+.head a:hover{color:#555;}
+</style>
+
+</head>
+<body>
+<div id="div1" class="page">
+	<div class="box">
+			<ul class="box_head">
+				<li><a href="#"><img src="images/2.jpg" alt=""/>iPod shuffle</a></li>
+				<li><a href="#"><img src="images/4.jpg" alt=""/>iPod nano</a></li>
+				<li><a href="#"><img src="images/3.jpg" alt=""/>iPod classic</a></li>
+				<li><a href="#"><img src="images/1.jpg" alt=""/>iphone SE</a></li>
+				<li><a href="#"><img src="images/5.jpg" alt=""/>Apple TV</a></li>
+				<li><a href="#"><img src="images/6.jpg" alt=""/>Accessories</a></li>
+
+
+				<li><a href="#"><img src="images/7.jpg" alt=""/>Download iTunes 10</a></li>
+				<li><a href="#"><img src="images/8.jpg" alt=""/>iTunes Gift Cards</a></li>
+				<li><a href="#"><img src="images/9.jpg" alt=""/>Nike + iPod</a></li>
+				<li><a href="#"><img src="images/10.jpg" alt=""/>(PRODUCT) RED</a></li>
+				<li><a href="#"><img src="images/11.jpg" alt=""/>MobileMe</a></li>
+				<li><a href="#"><img src="images/12.jpg" alt=""/>In-Ear Headphones</a></li>
+			</ul>
+	</div>
+	<div class="box_foot">
+		<span id="triangle"></span>
+		<a id="products">Products</a>
+		<a id="more">iTunes and more</a>
+	</div>
+</div>
+<script type="text/javascript">
+window.onload = function() {
+	var lis = document.getElementsByTagName('li');
+	var moreBtn = document.getElementById('more');
+	var productsBtn = document.getElementById('products');
+	var triangle = document.getElementById('triangle');
+	//转换为绝对定位
+	for (var i = lis.length - 1; i >= 0; i--) {
+		lis[i].style.left = lis[i].offsetLeft + 'px';
+		lis[i].style.top = lis[i].offsetTop + 'px';
+	}
+	for (var i = lis.length - 1; i >= 0; i--) {
+		lis[i].style.position = 'absolute';
+		lis[i].style.margin = 0;
+	}
+
+	moreBtn.onclick = function() {
+		//移动三角形标识的位置
+		qChangePos2(triangle,'left',moreBtn.offsetLeft + moreBtn.offsetWidth/2 -10);//-10为了协调
+
+		goOut(0,-300);//产品们移出展示区
+
+		setTimeout(function() {//iTunes移入展示区
+			goToShow(6);
+		},1300);//延迟时间的计算，每个图片移动时间是200ms，6个共1200ms，留出100ms的缓冲时间
+	};
+
+	productsBtn.onclick = function() {
+		//移动三角形标识的位置
+		qChangePos2(triangle,'left',productsBtn.offsetLeft + productsBtn.offsetWidth/2);
+
+		goOut(11,1000);	//iTunes移出展示区
+
+		setTimeout(function() {//产品们移入展示区
+			goToShow(5);
+		},1300);//延迟时间的计算，每个图片移动时间是200ms，6个共1200ms，留出100ms的缓冲时间
+	};
+
+/*
+ *功能为移出展示区，两个区域公用一个展示区，通过调用qChangePos2()来实现
+ *formIndex 取 0 or lis.length-1，分别为左半边的回去和右边的回去
+ *实现思路，将li们逐个放到不可见区域，但是要注意顺序，产品区的li要从左到右依次离开，而右边则相反，*所以要通过i来控制方向,下面的 goToShow()函数思路相似 
+ */
+function goOut(fromIndex,targetLocation) {
+	var i = fromIndex;
+	
+	var timer = setInterval(function () {
+		qChangePos2(lis[i],'left',targetLocation);
+		if (fromIndex == 0) {
+			i++;
+		}else{
+			i--;
+		}
+		if (Math.abs(i - fromIndex) == 6) {
+			clearInterval(timer);
+			//alert(i + 'clear');
+		}
+	},200);
+}
+
+/*
+ *到展示区函数，fromIndex 取lis.length/2-1 为左边的products页面到展示区,
+ *lis.length/2为右边的more页面到展示区
+ *实现思路，将li们逐个放到不可见区域，但是要注意顺序，产品区的li要从左到右依次离开，而右边则相反，*所以要通过i来控制方向,下面的 goToShow()函数思路相似 
+ */
+function goToShow(fromIndex) {
+	var i = fromIndex;
+	var locationIndex;
+	var timer = setInterval(function () {
+		locationIndex = i;
+		if(locationIndex >= lis.length/2){locationIndex-=6;}
+		qChangePos2(lis[i],'left',140 * locationIndex);
+
+		(fromIndex == lis.length/2 - 1)?i--:i++;
+
+		if (Math.abs(i - fromIndex) >= 6) {
+			clearInterval(timer);
+			//alert(i + 'clear');
+		}
+	},200);
+}
+
+};
+function qChangePos2(obj,attr,target,fn) {//具体控制弹性运动的函数attr取值'top' or 'left';target:目标值
+	var speed = 0,nowValue = 0;
+	var upperAttr = null;
+	var oriLocation = 0;//原始位置
+	//检查并改变参数attr的首字母，供offsetXXX使用
+	upperAttr = (attr === 'top')? 'Top' : 'Left';
+	oriLocation = nowValue = obj['offset' + upperAttr];
+	clearInterval(obj.timer);
+
+	obj.timer = setInterval(function(){
+		speed += (target-obj['offset' + upperAttr])/10;//使速度变化，变速运动
+		speed*=0.7;
+		nowValue+=speed;//speed会有误差，使误差积累到变量left上
+
+		if (Math.abs(target - obj['offset' + upperAttr])*2 > oriLocation && fn) {
+			fn();
+		}
+
+		if(Math.abs(speed)<1 &&  Math.abs(target - obj['offset' + upperAttr]) < 1) //当速度足够小而且距离足够近时，关闭定时器
+		{
+			obj['offset' + upperAttr] = target ;//如果这时候离目标点还有些距离，那么距离必然不会很大，手动移动到目标点即可
+			clearInterval(obj.timer);
+			//alert('clear timer');
+		}
+		else{
+			obj.style[attr] = nowValue + 'px';
+		}			
+	},30);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>hxd</title>
+<style>
+body,div,a,img{margin: 0;padding: 0;}
+body{background-color: #ccc;}
+img{border: none;width: 100%;height: 100%;}
+div{position: absolute;border: 2px solid #fff;}
+.showBox1{width: 140px;height: 100px;left: 322px;top: 130px;background-color: black;z-index: 1;}
+.showBox2{width: 200px;height: 150px;left: 392px;top: 100px;background-color: red;z-index: 2;}
+.showBox3{width: 300px;height: 200px;left: 500px;top: 75px;background-color: green;z-index: 3;}
+.showBox4{width: 200px;height: 150px;left: 710px;top: 100px;background-color: blue;z-index: 2;}
+.showBox5{width: 140px;height: 100px;left: 850px;top: 130px;background-color: pink;z-index: 1;}
+
+.box-reflect{
+	-webkit-box-reflect: below 20px -webkit-linear-gradient(top,rgba(250,250,250,0),rgba(250,250,250,.0) 40%,rgba(250,250,250,0.3));
+	 box-reflect: below 20px -webkit-linear-gradient(top,rgba(250,250,250,0),rgba(250,250,250,.0) 40%,rgba(250,250,250,0.3));
+}
+
+.btn{position: absolute;color: #fff;font-size: 30px;font-family: simsun;top: 170px;text-decoration: none;}
+#to-left{left: 250px;}
+#to-right{right: 300px;}
+</style>
+</head>
+<body>
+<div class="showBox1 box-reflect"><a href="#"><img src="1.jpg"></a></div>
+<div class="showBox2 box-reflect"><a href="#"><img src="2.jpg"></a></div>
+<div class="showBox3 box-reflect"><a href="#"><img src="3.jpg"></a></div>
+<div class="showBox4 box-reflect"><a href="#"><img src="4.jpg"></a></div>
+<div class="showBox5 box-reflect"><a href="#"><img src="5.jpg"></a></div>
+
+<a class="btn" id="to-left" href="javascript:"> < </a>
+<a class="btn" id="to-right" href="javascript:"> > </a>
+
+<script>
+window.onload = function() {
+	var arr = [];
+	var divs = document.getElementsByTagName('div');
+	var toLeft = document.getElementById('to-left');
+	var toRight = document.getElementById('to-right');
+
+	for (var i = 0; i < divs.length; i++) {
+		arr.push([
+					parseInt(getStyle(divs[i],'left')),
+					parseInt(getStyle(divs[i],'top')),
+					parseInt(getStyle(divs[i],'width')),
+					parseInt(getStyle(divs[i],'height')),
+					getStyle(divs[i],'zIndex')
+			]);
+	}
+
+	toRight.onclick = moveRight;
+
+	toLeft.onclick = moveLeft;
+
+	function moveLeft() {
+		arr.unshift(arr[arr.length-1]);
+		arr.pop();
+
+		pageChange();
+	}
+
+	function moveRight() {
+		arr.push(arr[0]);
+		arr.shift();
+
+		pageChange();
+	}
+
+	function pageChange() {
+		for (var i = 0; i < divs.length; i++) {
+			changeNow(divs[i],{ left:arr[i][0],top:arr[i][1],width:arr[i][2],height:arr[i][3]});
+			divs[i].style.zIndex = arr[i][4];
+		}
+	}
+
+	function getStyle(obj,attr) {
+		if (obj.currentStyle) {
+			return obj.currentStyle[attr];
+		}else{
+			return getComputedStyle(obj,false)[attr];
+		}
+	}
+
+	function changeNow(obj,json,func) {
+		clearInterval(obj.timer);
+		var speed = 0;
+		var attr = 0;
+		
+		obj.timer = setInterval(function(){
+			var isReady = true;
+			for(var i in json){
+				attr = (i=='opacity')?Math.round(parseFloat(getStyle(obj,i)) * 100):attr = parseInt(getStyle(obj,i));
+				speed = (json[i] - attr) > 0 ? Math.ceil((json[i] - attr)/8) : Math.floor((json[i] - attr)/8);
+				attr += speed;
+				
+				if(attr !== json[i])
+					isReady = false;
+				
+				if (i == 'opacity') {
+					obj.style.filter = 'alpha(opacity:'+ attr +')';
+					obj.style.opacity = attr/100;
+				}
+				else{
+					obj.style[i] = attr +'px';
+				}			
+			}
+			if(isReady){//循环完毕后就可以通过isResdy变量来判断是不是所有元素都到达了目标，换句话说是不是存在元素没有到达目标
+				clearInterval(obj.timer);
+				if (func) {func();}
+			}
+		},30);	
+	}
+};
+</script>
+</body>
+</html>

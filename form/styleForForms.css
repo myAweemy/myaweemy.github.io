@@ -1,0 +1,31 @@
+body,form,fieldset,input{padding: 0;margin:0;}
+body{background-color: rgba(148,198,221,.8);}
+a{text-decoration: none;color: #fff;}
+#feedback{width: 300px;margin:20px auto; padding: 10px 25px; background-color: rgba(255,255,255,.4);
+	font-family: simsun, "Microsoft Yahei";border: 1px solid #94C6DD;border-radius: 4px;}
+
+legend{width: 100%;color: #8B8E95; font-size: 25px;padding: 5px;box-sizing: border-box;
+	text-align: center;}
+
+fieldset{border: none;margin-bottom: 12px;}
+
+.fields{width: 100%;padding: .75em;}
+
+.fields .row{margin-bottom: 10px;position: relative;}
+
+label{width: 100%;cursor: pointer;display: block;padding: 3px 0;text-align: left;vertical-align: top;
+	color: #fff;font-size: 17px;}
+
+input,select,button,textarea{font-size: inherit;border: 1px solid #099;padding: 8px;border-radius: 3px;}
+textarea{resize: none;font-size: 20px;}
+input[type='submit']{display: block; width: 150px; margin:0 auto; color: #fff;
+	background-color: #00B4CD;padding: 5px;}
+
+input:focus,textarea:focus{border: 1px solid #f0f;}
+
+.forbid,#copyForbidBtn{display: block; width: 2em;height: 20px; line-height: 20px; position: absolute;right: -11px; top: 28px; 
+	text-align: center; padding: 5px;overflow: hidden;border-radius: 3px;background-color: #00B4CD;}
+
+#copyForbidBtn{ width: 6em; margin:0 auto; color: #fff;position: static;}
+
+.field-large{width: 250px;}

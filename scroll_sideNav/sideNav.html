@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>侧边导航栏</title>
+<style type="text/css">
+body,div,ul,li{margin: 0;padding: 0px;font-family: "Microsoft Yahei"}
+#wrap{width: 600px;margin: 0 auto; border: 1px solid #ccc;}
+.item-wrap{width: 500px;height: 400px; margin: 20px auto;background-color: rgba(148,198,221,.8);}
+ul{list-style: none;width: 50px;height: 200px;background-color: #eee;position: fixed;left: 50%;top: 150px;margin-left: 300px;}
+#sideNav li{width:30px; height: 20px;line-height: 20px;padding: 10px;text-align: center;list-style: none;}
+#sideNav li:hover {background-color: #036;}
+#sideNav li:hover a{color: #fff;}
+#sideNav li a{display: block;width: 100%;height: 100%; text-decoration: none;color: #333;font-size: 18px;}
+.active{background-color: rgba(148,198,221,.8);}
+</style>
+
+</head>
+<body>
+<div id="wrap">
+	<div id="1F" class="item-wrap">
+		<h2>1F</h2>
+	</div>
+	<div id="2F" class="item-wrap">
+		<h2>2F</h2>
+	</div>
+	<div id="3F" class="item-wrap">
+		<h2>3F</h2>
+	</div>
+	<div id="4F" class="item-wrap">
+		<h2>4F</h2>
+	</div>
+	<div id="5F" class="item-wrap">
+		<h2>5F</h2>
+	</div>
+</div>
+<ul id="sideNav">
+	<li><a href="#1F">1F</a></li>
+	<li><a href="#2F">2F</a></li>
+	<li><a href="#3F">3F</a></li>
+	<li><a href="#4F">4F</a></li>
+	<li><a href="#5F">5F</a></li>
+</ul>
+
+<script src="getByClass.js"></script>
+<script src="addEvent.js"></script>
+<script type="text/javascript">
+window.onload = function(){
+	var aItemWraps = getByClass(document.getElementById('wrap'),'item-wrap');
+	var aLiOfSideNav = document.getElementById('sideNav').getElementsByTagName('li');
+	var aTopOfItems = [];
+	for (var i = 0; i < aItemWraps.length; i++) {
+		aTopOfItems.push(aItemWraps[i].offsetTop);
+	}
+
+	init();
+
+	addEvent(window,'scroll',function(){
+		init();
+	});
+
+	function init() {
+		var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;//获取当前scrollTop
+		var nowIndex = 0;//索引
+		for (var i = 0; i < aTopOfItems.length; i++) {//开始从头循环
+			//若找到了一个offsetTop大于现在scrollTop的内容区，将索引置为这个，并且利用索引改变样式为选中（注意先将所有内容区的样式置为默认后）
+			if (aTopOfItems[i] > scrollTop) {
+				nowIndex = i;
+				for (var i = 0; i < aItemWraps.length; i++) {
+					aLiOfSideNav[i].className = '';
+				}
+				aLiOfSideNav[nowIndex].className = 'active';
+				return;
+			}
+		}
+	}
+};
+</script>
+</body>
+</html>
+<!--
+思路：
+	计算每个内容区的offsetTop，应该是从上到下逐渐增大的，
+	每次scroll事件中，调用init函数，此函数思路如下：
+		从第一个内容区的offsetTop开始，与scrollTop比较，
+		如果大于，则将他置为.active状态，为了避免继续向下比较下去导致后面的内容区都变成.active样式，就return;
+	
+	注意：由于只有当scroll时才会调用init()，所以刚进入页面时对应sideNav是没有.active样式的， 而且用户刷新页面后也会这样，所以要在onload中先调用一次init函数。
+
+-->

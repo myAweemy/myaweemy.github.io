@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+<title>表的操作 ，移入变色，添加，删除，查找，排序等功能</title>
+<style type="text/css">
+body{background-color: #ccc;text-align: center;}
+.comWidth{width: 270px;margin: 0 auto;}
+table{border-collapse: collapse;}
+table td{ border:1px solid white;width: 3em;text-align: center;}
+table a{display: block;width: 35px;height: 16px;line-height: 16px;margin: 0 auto; border-radius: 3px;font-size: 13px;text-decoration: none;color: #ccc;background-color: #f33;}
+.hover{background-color: #0ff;}
+</style>
+<script type="text/javascript">
+window.onload = function(){		
+	var inputName = document.getElementById('name');
+	var inputAge = document.getElementById('age');
+	var inputKeyWord = document.getElementById('keyWord');
+	var btn_submit = document.getElementById('btn_submit');
+	var btn_search = document.getElementById('btn_search');
+	var btn_sort = document.getElementById('btn_sort');
+	var table = document.getElementsByTagName('table')[0];
+	var aTrs = table.tBodies[0].getElementsByTagName('tr');
+	var as = table.getElementsByTagName('a');
+	var id = 5;
+	
+	btn_submit.onclick = function(){
+		var tr = document.createElement('tr');
+		var td = document.createElement('td');
+		td.innerHTML = id++ + '';
+		tr.appendChild(td);
+		var td = document.createElement('td');
+		td.innerHTML = inputName.value;
+		tr.appendChild(td);
+		var td = document.createElement('td');
+		td.innerHTML = inputAge.value;
+		tr.appendChild(td);
+		var td = document.createElement('td');
+		td.innerHTML = '<a href="#">Del</a>';
+		tr.appendChild(td);
+		table.tBodies[0].appendChild(tr);	
+		as = table.getElementsByTagName('a');//每次添加进新列表项时更新一下as数组	
+
+		aTrs = table.tBodies[0].getElementsByTagName('tr');
+		for (var i = as.length - 1; i >= 0; i--) {
+			as[i].onclick = function(){ 
+				table.tBodies[0].removeChild(this.parentNode.parentNode);
+			}
+		}	
+
+		mouseOver(aTrs);
+	};
+	//删除
+	for (var i = as.length - 1; i >= 0; i--) {
+		as[i].onclick = function(){ 
+			table.tBodies[0].removeChild(this.parentNode.parentNode);
+		}
+	}
+	//查找搜索
+	btn_search.onclick = function(){
+		var rows = table.tBodies[0].rows;
+		var keyWord = inputKeyWord.value.toLowerCase();
+		var aKeyWord = keyWord.split(' ');
+		//清除上次搜索时给搜索结果赋的颜色，即全部重新设置一遍，或者调用初始化颜色的函数来做
+		for (var i = rows.length - 1; i >= 0; i--) {				
+				rows[i].style.backgroundColor = '';					
+		}
+		for (var i = rows.length - 1; i >= 0; i--) {
+			var data = rows[i].cells[1].innerHTML.toLowerCase();
+			for(var j = 0;j<aKeyWord.length;j++){	
+				if (data.search(aKeyWord[j]) != -1) { //data.search(keyWord)
+					rows[i].style.backgroundColor = '#70b3dc';
+				}
+			}
+		}
+	};
+	//排序,新建一个数组。将列表项的引用传递进去，之后排序，排序完成后将引用传递回去
+	btn_sort.onclick = function(){
+		var arr = new Array();
+		for(var i = 0;i < table.tBodies[0].rows.length;i++){
+			arr[i] = table.tBodies[0].rows[i];
+		}
+		arr.sort(function(v1,v2){//从小到大
+			n1 = parseInt(v1.cells[2].innerHTML);
+			n2 = parseInt(v2.cells[2].innerHTML);
+			return n1-n2;
+		});
+
+		for(var i = 0;i < arr.length;i++){
+			table.tBodies[0].appendChild(arr[i]);
+		}				
+	};
+
+	mouseOver(aTrs);
+
+	function mouseOver(objs) {//鼠标移入变色
+		for (var i = 0; i < objs.length; i++) {
+			objs[i].onmouseover = function(){
+				for (var i = 0; i < objs.length; i++) {
+					objs[i].className = '';
+				}
+				this.className = 'hover';
+			};
+			objs[i].onmouseout = function(){
+				for (var i = 0; i < objs.length; i++) {
+					this.className = '';
+				}
+			};
+		}
+	}
+}
+</script>
+</head>
+<body>
+
+<div class="comWidth">
+姓名:<input type="text" style="width: 4em;"  id="name" /> 年龄:<input type="text" style="width: 4em;"  id="age" /><input type="button"  value="添加" id="btn_submit" />
+<table>
+	<thead>
+		<tr>
+			<td>id</td>
+			<td>姓名</td>
+			<td>年龄</td>
+			<td>操作</td>
+		</tr>
+	</thead>
+	<tbody class="tbody1">
+		<tr>
+			<td>1</td>
+			<td>张三</td>
+			<td>50</td>
+			<td><a href="#">Del</a></td>
+		</tr>
+		<tr>
+			<td>2</td>
+			<td>LISI</td>
+			<td>22</td>
+			<td><a href="#">Del</a></td>
+		</tr>
+		<tr>
+			<td>3</td>
+			<td>王五</td>
+			<td>23</td>
+			<td><a href="#">Del</a></td>
+		</tr>
+		<tr>
+			<td>4</td>
+			<td>张三儿</td>
+			<td>33</td>
+			<td><a href="#">Del</a></td>
+		</tr>
+	</tbody>
+</table>
+姓名:<input type="text" style="width: 4em;"  id="keyWord" /> <input type="button"  value="搜索" id="btn_search" />
+<input type="button"  value="排序(按年龄增)" id="btn_sort" />
+</div><br>
+<h2 style="text-align: center;">搜索功能：精确搜索，不区分大小写搜索，模糊搜索，多关键字搜索.如下图示例：</h2>
+<img src="tip.gif" >
+</body>
+</html>

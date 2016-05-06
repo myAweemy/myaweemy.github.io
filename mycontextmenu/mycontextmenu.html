@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>自定义右键菜单</title>
+<style>
+body,div,ul,li,span{margin: 0;padding: 0;}
+body{background-color: #ccc;}
+#contextmenu{display: none; width: 156px;background-color: #fff;opacity: 0.8;filter: alpha(opacity:80); border-radius: 5px; position: absolute;overflow: hidden;}
+ul{list-style: none;width: 150px;margin: 3px; background-color: rgba(44,44,64,.8);overflow: hidden;}
+li{width: 148px;height: 32px;margin-bottom: 5px;overflow: hidden;}
+span{display: block;height: 31px;line-height: 31px;font-size: 15px;color: #B5C2BF;cursor: default;
+	font-family: "Microsoft Yahei";margin: 0 10px;padding-left: 55px;border-bottom:1px dashed #fff;}
+ul li:last-child span{border-bottom: none;}
+#back{background: url(back.png) 10px 2px no-repeat;background-size: 25px 25px;}
+#forward{background: url(forward.png) 10px 2px no-repeat;background-size: 25px 25px;}
+#reload{background: url(reload.png) 10px 2px no-repeat;background-size: 25px 25px;}
+#toIndex{background: url(toIndex.png) 10px 2px no-repeat;background-size: 25px 25px;}
+#close{background: url(close.png) 10px 2px no-repeat;background-size: 25px 25px;}
+#search{background: url(search.png) 10px 2px no-repeat;background-size: 25px 25px;}
+
+</style>
+<script>
+window.onload = function () {
+
+	var heightOfMyCm = 220;//myCm is short for myContextmenu，
+	var myCm = document.getElementById('contextmenu');
+	var back = document.getElementById('back');
+	var forward = document.getElementById('forward');
+	var reload = document.getElementById('reload');
+	var toIndex = document.getElementById('toIndex');
+	var close = document.getElementById('close');
+	var search = document.getElementById('search');
+
+	document.oncontextmenu = function(ev){
+		var event = ev||event;//定义并确定事件
+
+		
+		var oUl =  myCm.getElementsByTagName('ul')[0];
+		oUl.style.height = 0;
+		//操作自定义右键菜单，确定其显示位置且让其显示出来
+		myCm.style.left = event.clientX + 'px';
+		myCm.style.top = event.clientY + 'px';
+		myCm.style.display = 'block';
+		myCm.style.width = '156px';
+
+        qChangeSize(oUl,'height',heightOfMyCm);
+
+        back.onclick = function () {
+        	if (history.length > 0) {
+        		history.back();	
+        	}
+        };
+        forward.onclick = function () {
+        	history.forward();	
+        };
+        reload.onclick = function () {
+        	location.reload();
+        };
+
+		return false;//阻止默认事件，使自带右键菜单不弹出
+	};
+	document.onclick = function(){//点击其他位置自定义右键菜单消失
+		var myCm = document.getElementById('contextmenu');//myCm is short for myContextmenu
+		var oUl =  myCm.getElementsByTagName('ul')[0];
+		qChangeSize(oUl,'height',0,function () {//在内部的ul长度变为0之后使myCm不显示
+			linearChangeSize(myCm,'width',0,10);
+		});
+	};	
+};
+
+function qChangeSize(obj,attr,target,fn) {//弹性的变化属性
+	var speed = 0,nowValue = null;
+	var upperAttr = null;
+	if (attr == 'height') {
+		upperAttr = 'Height';
+	}else{
+		upperAttr = 'Width';
+	}
+	nowValue = obj['offset' + upperAttr];
+	clearInterval(obj.timer);
+	obj.timer = setInterval(function(){
+		speed += (target-obj['offset' + upperAttr])/5;
+		speed*=0.7;
+		nowValue+=speed;
+		if (nowValue < 0) {nowValue = 0;}
+		obj.style[attr] = nowValue + 'px';
+		if(Math.abs(speed)<1 &&  Math.abs(target - obj['offset' + upperAttr]) < 1) 
+		{
+			obj.style[attr] = target + 'px';
+			clearInterval(obj.timer);
+			if (fn) {fn();}
+		}
+	},30);
+}
+function linearChangeSize(obj,attr,target,s,fn) {//线性的变化属性s:speed
+	var speed = nowValue = 0;
+	var upperAttr = '';
+	if (attr == 'height') {
+		upperAttr = 'Height';
+	}else{
+		upperAttr = 'Width';
+	}
+	nowValue = obj['offset' + upperAttr];
+	speed = (target > nowValue)?s:-s;
+	clearInterval(obj.timer);
+	obj.timer = setInterval(function(){
+		nowValue+=speed;
+		
+		if(Math.abs(target - nowValue) < Math.abs(speed)) 
+		{
+			nowValue = target;
+			clearInterval(obj.timer);//关闭定时器后不会立即停止本次的执行，仍然会执行完下面的代码
+			if (fn) {fn();}
+		}
+		obj.style[attr] = nowValue + 'px' ;
+	},30);
+}
+</script>
+</head>
+<body>
+<div id="contextmenu">
+	<ul>
+		<li><span id="back">后退</span></li>
+		<li><span id="forward">前进</span></li>
+		<li><span id="reload">重新加载</span></li>
+		<li><span id="close">关闭页面</span></li>
+		<li><span id="search">搜索</span></li>
+		<li><span id="toIndex">去首页</span></li>
+	</ul>
+</div>
+</body>
+</html>

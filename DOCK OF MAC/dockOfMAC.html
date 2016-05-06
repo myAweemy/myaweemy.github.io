@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>DOCK OF MAC</title>
+<style type="text/css">
+	body{margin: 0;padding: 0;}
+	#wrap{width: 100%;margin: 0 auto;position: absolute;bottom: 0;text-align: center;}
+	#wrap img{margin-left:10px;}
+</style>
+<script>
+
+window.onload = function () {
+	const widthOfImg = 128;
+	const ratio = 295;//控制比例
+	var oWrap = document.getElementById('wrap');
+	var aImgs = oWrap.getElementsByTagName('img');
+	document.onmousemove = function (ev) {
+		var event = ev || event;
+		for (var i = 0; i < aImgs.length; i++) {
+			//每个图标的中心点
+			var x = oWrap.offsetLeft + aImgs[i].offsetLeft + aImgs[i].offsetWidth/2;
+			var y = oWrap.offsetTop + aImgs[i].offsetTop + aImgs[i].offsetHeight/2;
+
+			//计算鼠标距离每个图标中心点的x方向的距离和y方向的距离，为计算鼠标到图标中心点的距离做准备
+			var disX = x - event.clientX;//无所谓正负，因为下面都要平方
+			var disY = y - event.clientY;
+
+			//计算鼠标到图标中心点的距离做准备
+			var dis = Math.sqrt(disX*disX + disY*disY);
+
+			var scale = 1 - dis/ratio;//计算缩放比例
+			if (scale < 0.5) {
+				scale = 0.5;
+			}
+			//根据缩放率来变化大小
+			aImgs[i].width = widthOfImg * scale;
+
+		}
+	}
+} 
+
+
+</script>
+</head>
+<body>
+<div id="wrap">
+	<img src="images/1.png" width="64">
+	<img src="images/2.png" width="64">
+	<img src="images/4.png" width="64">
+	<img src="images/3.png" width="64">
+	<img src="images/5.png" width="64">
+</div>
+</body>
+</html>

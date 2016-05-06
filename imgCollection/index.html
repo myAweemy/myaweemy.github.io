@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+	<title>图片从中心放大</title>
+	<link rel="icon" sizes="any" type="image/x-icon" href="images/i.ico">
+<style type="text/css">
+body,div,ul,li{padding: 0;margin: 0;}
+body{background-color: rgba(148,198,221,.8);}
+ul{width: 360px;height: 360px;margin-top: 100px;margin-left: 500px;overflow: hidden;border: 2px solid #ccc;list-style: none;background-color: rgba(255,255,255,.4);border: 1px solid #94C6DD;}
+li{height: 100px;width: 100px;margin: 10px;float: left;overflow: hidden;z-index: 1;}
+img{height: 100%;border: 2px #fff solid}/*使它按比例缩放*/
+
+</style>
+
+</head>
+<body>
+<ul>
+	<li><img src="images/1.jpg"></li>
+	<li><img src="images/2.jpg"></li>
+	<li><img src="images/3.jpg"></li>
+	<li><img src="images/4.jpg"></li>
+	<li><img src="images/5.jpg"></li>
+	<li><img src="images/6.jpg"></li>
+	<li><img src="images/7.jpg"></li>
+	<li><img src="images/8.jpg"></li>
+	<li><img src="images/9.jpg"></li>
+</ul>
+<script type="text/javascript" src="script.js"></script>
+<script>
+window.onload = function(){
+	var oUl = document.getElementsByTagName('ul')[0];
+	var aLi = document.getElementsByTagName('li');
+	var nowZIndex = 2;//控制层叠
+
+	/*
+	 *	将浮动转换为绝对定位，便于后面对left,top等属性的操作
+	 */
+	for (var i = aLi.length - 1; i >= 0; i--) {
+		aLi[i].style.left = aLi[i].offsetLeft + 'px';
+		aLi[i].style.top = aLi[i].offsetTop + 'px';
+	}
+	for (var i = aLi.length - 1; i >= 0; i--) {
+		aLi[i].style.position = 'absolute';
+		aLi[i].style.margin = 0;
+	}
+	
+	for (var i = aLi.length - 1; i >= 0; i--) {
+		aLi[i].onmouseover = function(){
+			this.style.zIndex = nowZIndex++;//使当前元素的zIndex比最大值还大，这个方法挺常用的
+			//设置外边距到合适的位置
+			changeNow(this, {width:200,height:200,marginLeft:-50,marginTop:-50} );
+		};
+		aLi[i].onmouseout = function(){
+			changeNow(this, {width:100,height:100,marginLeft:0,marginTop:0} );
+		};
+	}
+	window.onresize = function(){
+		oUl
+	};
+};
+</script>	
+</body>
+</html>

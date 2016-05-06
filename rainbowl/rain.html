@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>rain</title>
+<style>	
+body{background-color: #000;padding: 0;}
+img{display: block;position: absolute;border: none;}	
+h1{font-size: 45px;color: #008ABA;text-align: center;font-weight: 200;font-family:"宋体",sans-serif, "Arial";}
+</style>
+</head>
+<body>
+<h1>点击鼠标并拖动试试~</h1>
+<script>
+window.onload = function () {
+
+var rains = [];
+var y = rnd(100,1000);//自动产生圈时的y位置
+var x = rnd(100,300);//自动产生圈时的x位置
+var speedX = 0;
+var speedY = 0;
+var isTouchY = isTouchX = false;//是否碰到了窗口边框，来改变移动方向，
+
+document.onmousedown = function (ev) {
+	var oEvent = ev || event;
+	var lastX = oEvent.clientX;
+	var lastY = oEvent.clientY;
+	createRain(oEvent.clientX,oEvent.clientY);
+	document.onmousemove = function (ev) {
+		
+		var oEvent = ev || event;
+		if (Math.abs(oEvent.clientX - lastX) > 7 || Math.abs(oEvent.clientY - lastY)) {
+			createRain(oEvent.clientX,oEvent.clientY);
+		}
+		lastX = oEvent.clientX;
+		lastY = oEvent.clientY;
+	};
+	document.onmouseup = function (ev) {
+		document.onmousemove = null;
+		document.onmouseup = null;
+	};
+	return false;
+};
+
+setInterval(function(){
+	//根据是否碰到了边框来决定速度方向
+	if (isTouchX == true) {
+		var speedX = rnd(0,12);
+	}else{
+		var speedX = -rnd(0,12);
+	}
+	if (isTouchY == true) {
+		var speedY = rnd(0,12);
+	}else{
+		var speedY = -rnd(0,12);
+	}
+
+	autoMove(speedX,speedY);
+	update();
+},50);
+	
+function createRain(x,y) {//绘制单个彩虹圈并放入数组中，参数为产生的位置
+	var oRain = document.createElement('img');
+	oRain.style.width = '100px';
+	oRain.style.height = '100px';
+	oRain.style.left = x - 50 + 'px';
+	oRain.style.top = y - 50 +  'px';
+	var src = Math.ceil(Math.random() * 5);
+	oRain.src = src + '.png';
+	document.body.appendChild(oRain);
+	rains.push(oRain);
+}
+
+function update() {//逐个改变数组中每个彩虹圈的属性,在缩小为0后将其释放给垃圾回收器
+	for (var i = rains.length-1; i >=0 ; i--) {
+		rains[i].style.height = parseInt(rains[i].style.height) -10 + 'px';
+		rains[i].style.width = parseInt(rains[i].style.width) -10 + 'px';
+		rains[i].style.top = rains[i].offsetTop  + 10 + 'px';
+		rains[i].style.left = rains[i].offsetLeft  + 10 + 'px';
+		if (parseInt(rains[i].style.height) == 0) {
+			document.body.removeChild(rains[i]);//从HTML中移除
+			rains.splice(i,1);//从数组中删除
+		}
+	}
+}
+
+function autoMove(speedX,speedY) {//改变产生彩虹圈的位置并产生彩虹圈，参数为速度
+
+	//边界判定
+	if(x < 50)
+	{
+		x = 50;
+		isTouchX = (isTouchX == true)?false:true;
+	}
+	else if(x > document.documentElement.clientWidth - 100)
+	{
+		x = document.documentElement.clientWidth - 100;
+		isTouchX = (isTouchX == true)?false:true;
+	}
+
+	if(y > document.documentElement.clientHeight - 100)
+	{
+		y = document.documentElement.clientHeight - 100; 
+		isTouchY = (isTouchY == true)?false:true;
+	}
+	else if(y < 50)
+	{
+		y = 50;
+		isTouchY = (isTouchY == true)?false:true;
+	}
+	//改变位置
+	x += speedX;
+	y += speedY;
+	//根据位置产生彩虹圈
+	createRain(x,y);
+}
+
+function rnd(min, max)//产生随机数
+{
+	return parseInt((Math.random()*99999)%(max-min+1))+min;
+}
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>全选反选</title>
+<style type="text/css">
+body,input,li{padding: 0;margin:0;}
+body{background-color: rgba(148,198,221,.8);}
+#wrap{width: 150px;margin: 100px auto;padding: 10px 25px; background-color: rgba(255,255,255,.4);
+	font-family: simsun, "Microsoft Yahei";border: 1px solid #94C6DD;border-radius: 4px;}
+#wrap li{list-style: none;margin:10px 20px;}
+#chooseAll{margin-bottom: 30px;}
+</style>
+</head>
+<body>
+<div id="wrap">
+<ul>
+	<li><input id="chooseAll" type="checkbox"/>全选</li>
+	<li><input type="checkbox" />选项们</li>
+	<li><input type="checkbox" />选项们</li>
+	<li><input type="checkbox" />选项们</li>
+	<li><input type="checkbox" />选项们</li>
+	<li><input type="checkbox" />选项们</li>
+	<li><input type="checkbox" />选项们</li>
+	<li><input type="checkbox" />选项们</li>
+</ul>
+</div>
+
+<script>
+window.onload = function () {
+	var wrap = document.getElementById('wrap');
+	var checkboxs = getInput(wrap,'checkbox');
+	var chooseAll = checkboxs[0];
+	chooseAll.onclick = function () {
+		if (chooseAll.checked) {
+			for (var i = 1; i < checkboxs.length; i++) {
+				checkboxs[i].checked = true;
+			}
+		}else{
+			for (var i = 1; i < checkboxs.length; i++) {
+				checkboxs[i].checked = false;
+			}
+		}
+	}
+};
+function getInput(obj,type) {
+	var result = [];
+	var aInputs = obj.getElementsByTagName('input');
+	for (var i = 0; i < aInputs.length; i++) {
+		if (aInputs[i].type === type) {
+			result.push(aInputs[i]);
+		}
+	}
+	return result;
+}
+</script>
+</body>
+</html>

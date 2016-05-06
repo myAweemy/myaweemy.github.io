@@ -1,0 +1,30 @@
+body { background: #ddd; } ul { padding: 0; margin: 0; } li { list-style: none; } img { border: 0; }
+
+.play { width: 730px; height: 454px; margin: 50px auto 0; background: #ccc; font: 12px Arial; position: relative;}
+
+.big_pic { width: 730px; height: 454px; overflow: hidden; background: #222; position: relative; }
+.big_pic li { width: 730px; height: 454px; overflow: hidden; position: absolute; top: 0; left: 0; z-index: 0; background: url(images/loading.gif) no-repeat center center;}
+.big_pic li img{ width: 730px; height: 454px;}
+
+.mark_left,.mark_right{width: 365px; height: 454px; position: absolute; left: 0; top: 0; filter: alpha(opacity:0); opacity: 0; z-index:3000;}
+.mark_left { left: 0;}
+.mark_right {left: 365px; }
+
+.big_pic .prev,.big_pic .next{ width: 28px; height: 62px; position: absolute; top: 40%;z-index: 3001;filter:alpha(opacity:0); opacity:0; 
+	cursor: pointer;line-height:62px;text-align:center;font-size:24px;font-weight:400;color:#fff;font-family:simsun; background:rgba(0,0,0,.3); }
+.big_pic .prev { left: 0;}
+.big_pic .next { right: 0;}
+
+.big_pic .desciption,.big_pic .page{font-size: 15px; font-family: "Microsoft Yahei"; position: absolute;bottom: 4px; z-index: 3000; color: #ccc; }
+.big_pic .desciption { left: 10px; }
+.big_pic .page { right: 10px; }
+
+.small_pic { width:480px; height: 94px; position: relative; top: 7px; left: 100px;  overflow: hidden;}
+.small_pic ul { width:480px; height: 94px; position: absolute; top: 0; left: 0; }
+.small_pic li { width: 150px; height: 94px; float: left; padding-right: 10px; background: url(images/loading.gif) no-repeat center center; cursor: pointer; filter: alpha(opacity=60); opacity: 0.6; }
+.small_pic img { width: 100%;}
+
+.tipsWrap{ width: 90px;height: 14px;border-radius: 6px;background-color: #999;filter:alpha(opacity:40); opacity:0.4;position: absolute;
+	left: 200px; bottom: 25px;z-index: 3001;}
+.tipsWrap .active{ display: block; float:left; width: 10px;height: 10px;border-radius: 5px; background-color: #eee;
+	filter:alpha(opacity:90); opacity:0.9;margin: 2px 2px;}
