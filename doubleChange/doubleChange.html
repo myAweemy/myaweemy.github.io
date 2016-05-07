@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>凡客双轮播</title>
+<style>	
+*{margin:0; padding:0;font-family:'微软雅黑';font-size:12px;}
+ul{list-style: none;}
+img{width: 100%;}
+.wrap{width:600px;margin:100px auto;border: 1px solid #ccc;padding:50px;}
+#tab{overflow:hidden;}
+#tab li{float:left;width:100px;height:30px;line-height:30px;text-align:center;background:#eee;color:#333;cursor:pointer;
+	-webkit-transition:all 0.3s;
+	-o-transition:all 0.3s;
+	-ms-transition:all 0.3s;
+	-moz-transition:all 0.3s;
+	transition:all 0.3s;}
+#tab li.cur{background:#c40;color:#fff;}
+.wrap>div,.wrap>div li{display:none;overflow:hidden;}
+.wrap>div li{width:460px;height:260px;background:#666;color:#fff;float:left;}
+.wrap>div.show,.wrap>div li.show{display:block;}
+.wrap>div ul{float:left;}
+.wrap>div div{width:100px;float:left;}
+.wrap>div a{width:100px;display:block;text-align:center;height:30px;line-height:30px;text-decoration:none;color:#666;background:#eee;border-bottom:1px solid #ccc;
+	-webkit-transition:all 0.3s;
+	-o-transition:all 0.3s;
+	-ms-transition:all 0.3s;
+	-moz-transition:all 0.3s;
+	transition:all 0.3s;}
+.side a.cur{background:#333;color:#fff;}
+</style>
+</head>
+<body>
+	<div class="wrap">
+		<ul id="tab">
+			<li class="cur">时尚女装</li>
+			<li >精品男装</li>
+		</ul>
+		<div id="areaLeft" class="show">
+			<ul>
+				<li class="show" ><img src="4.jpg"></li>
+				<li><img src="3.jpg"></li>
+				<li><img src="5.jpg"></li>
+			</ul>
+			<div class="side">
+				<a href="javascript:;" class="cur">yamakawa 5</a>
+				<a href="javascript:;">STARS</a>
+				<a href="javascript:;">super me</a>
+			</div>
+		</div>
+		<div id="areaRight">
+			<ul>
+				<li class="show"><img src="1.jpg"></li>
+				<li><img src="2.jpg"></li>
+				<li><img src="6.jpg"></li>
+				<div class="side">
+					<a href="javascript:;" class="cur">凡客T恤-1</a>
+					<a href="javascript:;">限时满减</a>
+					<a href="javascript:;">凡客T恤-3</a>
+				</div>
+			</ul>
+		</div>
+	</div>
+<script>
+var tabLis=document.getElementById('tab').getElementsByTagName('li');
+var areaRight=document.getElementById('areaRight');
+var areaLeft=document.getElementById('areaLeft');
+var rightTabs=areaRight.getElementsByTagName('a');
+var areaRightLi=areaRight.getElementsByTagName('li');
+var leftTabs=areaLeft.getElementsByTagName('a');
+var areaLeftLi=areaLeft.getElementsByTagName('li');
+
+function tab(obj,tabDom,time){
+	var nowIndex=0,timer = null;
+	var len = obj.length;//减少对DOM的访问
+	if(obj.length != tabDom.length)return;
+
+	for(var i=0;i<len;i++){
+		obj[i].index=i;
+		obj[i].onclick=function(){
+			nowIndex=this.index;
+			tabChange(nowIndex);
+		};
+	}
+	if (timer) {
+		clearInterval(timer);
+	}
+	timer=setInterval(tabAuto, time);
+
+	function tabChange(n){
+		for(var i=0;i<len;i++){
+			obj[i].className='';
+			tabDom[i].className='';
+		}
+		obj[n].className='cur';
+		tabDom[n].className='show';
+	}
+
+	function tabAuto(){
+		nowIndex++;
+		if(nowIndex >= obj.length){
+			nowIndex=0;
+		}
+		for(var i=0;i<len;i++){
+			obj[i].className='';
+			tabDom[i].className='';
+		}
+		obj[nowIndex].className='cur';
+		tabDom[nowIndex].className='show';
+	}
+}
+tab(tabLis,[areaLeft,areaRight],6000);
+tab(rightTabs,areaRightLi,2000);
+tab(leftTabs,areaLeftLi,2000);
+</script>
+</body>
+</html>
