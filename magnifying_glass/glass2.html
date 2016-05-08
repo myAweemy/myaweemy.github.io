@@ -9,11 +9,11 @@ body{background-color: #ddd;}
 ul{list-style: none;width: 252px;height: 50px;border: 2px solid #fff;margin: 15px auto;position: absolute;top: 450px;left: 254px;}
 ul li{width: 80px;height: 100%;margin: 2px; float: left;}
 ul li img{width: 100%;}
-#wrap{width: 400px;height: 240px;border: 2px solid #fff;overflow: hidden;position: absolute;top: 200px;left: 200px;}
+#wrap{width: 400px;height: 240px;border: 2px solid #fff;overflow: hidden;position: absolute;top: 200px;left: 200px;cursor: crosshair;}
 #wrap #mask{width: 100%;height: 100%;position: absolute;z-index: 3;}
 #wrap img{width: 100%;z-index: 1;}
 .screen{position: absolute;width: 600px;height: 360px;background-color: #ccc;right: 100px;top: 180px;display: none;overflow: hidden; border: 1px solid #ddd;}
-#flyer{width: 50px;height: 50px;position: absolute;background-color: #000;opacity: 0.5;filter: alpha(opacity:50);display: none;z-index: 2;}
+#flyer{width: 80px;height: 80px;position: absolute;background-color: #000;opacity: 0.5;filter: alpha(opacity:50);display: none;z-index: 2;}
 </style>
 <script type="text/javascript">
 window.onload = function(){
@@ -43,8 +43,6 @@ window.onload = function(){
 		document.body.appendChild(screen);
 
 		wrap.onmousemove = function(ev){
-			
-
 			var event = ev || event;
 			var disX = event.clientX - wrap.offsetLeft;
 			var disY = event.clientY - wrap.offsetTop;

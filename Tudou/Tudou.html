@@ -1,0 +1,144 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Tudou 链式调用练习</title>
+<style type="text/css">
+body,div,ul,li,a{margin:0;padding:0;}
+li{list-style:none;}
+div,h2,a,li,span{font: 12px/1.25 tahoma,arial,宋体,sans-serif;}
+a{text-decoration:none;}
+body{width:100%;height:100%;background:#000;-position:relative;overflow:hidden;}
+.box{position:fixed;-position:absolute;right:0;bottom:0;}
+#box-bottom{width:203px;height: 50px;background:url(bg2.png) no-repeat 0 0;position:absolute;right:-165px;bottom:0;z-index: 20001;}
+#nav{height: 22px;margin: 5px 0 0 43px;width: 125px;}
+#nav li{float: left;width: 25px;}
+#nav li a{display: block;height: 22px;width: 25px;}
+#nav li .show,#nav li a:hover{background: url(bg2.png) no-repeat 0 -51px;}
+#nav .li-1 .show,#nav .li-1 a:hover{background-position:-25px -51px}
+#nav .li-2 .show,#nav .li-2 a:hover{background-position:-50px -51px}
+#nav .li-3 .show,#nav .li-3 a:hover{background-position:-75px -51px}
+#nav .li-4 .show,#nav .li-4 a:hover{background-position:-100px -51px}
+.sign{color: #FFFFFF;height: 16px;margin: 4px 0 0 8px;overflow: hidden;width: 160px;}
+#btn-show{ bottom: 0;display: block;height: 50px;position: absolute;right: 0;width: 33px;z-index:20002;}
+.btn-hide{background: url(bg2.png) no-repeat -170px 0;}
+.btn-hide:hover{background-position:-203px 0;}
+.btn-show{background: url(bg2.png) no-repeat -236px 0;}
+.btn-show:hover{background-position:-269px 0;}
+#box-top{bottom:-315px;display:none;height: 315px;padding: 0 0 48px;position: absolute;right: 1px;width: 200px; z-index: 20000;}
+.bg{background: url(bg.jpg) no-repeat 0 0;height: 315px;opacity: 0.9;position: absolute;right: 0;top: 0;width: 200px;}
+.bg-nav{bottom: 48px;height: 176px;left: 0;position: absolute;width: 34px;background: url(bg.jpg) no-repeat 0 -139px;}
+#list-nav{background: url(bg2.png) no-repeat scroll 0 -255px transparent;height: 139px;left: 0;position: absolute;top: 2px;width: 34px;}
+#list-nav a{ color: #FFFFFF;display: block;height: 27px;line-height: 25px;text-align: center;text-decoration: none;}
+#list-nav .show{color: #FF9900;}
+#list-nav a:hover{color:#FFFF00;}
+.close{ background: url(bg2.png) no-repeat 0 -76px ;cursor: pointer;height: 9px;position: absolute;right: 10px;top: 14px;width: 9px;}
+.box-side{color: #FFFFFF;height: 285px;overflow: hidden;position: absolute;right: 6px;top: 28px;width: 150px;}
+</style>
+<script type="text/javascript" src="changeNow.js"></script>
+<script type="text/javascript">
+window.onload=function (){
+
+	var isShowing = false;
+	var btnShow=document.getElementById('btn-show');
+	var boxBottom=document.getElementById('box-bottom');
+	var oBox=document.getElementById('box-top');
+	var btnclose=document.getElementById('btn-close');
+	var oriBottomRight=parseInt(getStyle(boxBottom, 'right'));
+	var oriBoxBottom=parseInt(getStyle(oBox, 'bottom'));
+	
+	btnShow.onclick=function ()
+	{
+		if (!isShowing) {
+			startShow();
+			isShowing = true;
+		}else{
+			startHide();
+			isShowing = false;
+		}
+	};
+
+	btnclose.onclick=function ()
+	{
+		startHide();
+		isShowing = false;
+	};
+
+	function startShow() {
+		changeNow(boxBottom, {right: 0}, function (){
+			oBox.style.display='block';
+			changeNow(oBox, {bottom: 0});
+		});
+		btnShow.className='btn-hide';
+	}
+
+	function startHide() {
+		changeNow(oBox, {bottom: oriBoxBottom}, function (){
+			oBox.style.display='none';
+			changeNow(boxBottom, {right: oriBottomRight}, function (){
+				btnShow.className='btn-show';
+			});
+		});
+	}
+};
+</script>
+</head>
+<body>
+<div class="box">
+	<div id="box-bottom">
+		<ul id='nav'>
+			<li><a href="#"></a></li>
+			<li class='li-1'><a href="#"></a></li>       
+			<li class='li-2'><a href="#"></a></li>       
+			<li class='li-3'><a href="#"></a></li>       
+			<li class='li-4'><a href="#"></a></li>      
+		</ul>
+		<h2 class="sign">土豆 豆豆豆豆豆豆</h2>
+	</div>
+	<a class="btn-show" id="btn-show" href="#"></a>
+	<div id="box-top">
+		<div class="bg"></div>
+		<div class="bg-nav"></div>
+		<ul id="list-nav">       
+			<li><a  class="show" href="#">天气</a></li>
+			<li class="tab2"><a href="#">星座</a></li>
+			<li class="tab3"><a href="#">排行</a></li>
+			<li class="tab4"><a href="#">热点</a></li>
+			<li class="tab5"><a href="#">直播</a></li>
+		</ul>
+		<a class='close' id="btn-close"></a>
+		<div class="box-side">  
+			<div>北京</div>      
+				<div>    
+					<div>     
+						<strong><em>今天</em> (周二)</strong>           
+						<img src="1.png" class="pic">         
+					</div>    
+					<span>-1~256C°</span>
+					<span>晴</span>
+					<span>微风小于3级</span>   
+				</div>      
+				<div >    
+					<div>     
+						<strong><em>明天</em> (周三)</strong>           
+						<img src="2.png" class="pic">         
+					</div>    
+					<span>110~11C°</span>
+					<span>多云</span>
+					<span>北风3-4级</span>   
+				</div>      
+				<div>    
+					<div>     
+						<strong><em>后天</em> (周四)</strong>           
+						<img src="1.png" class="pic">         
+					</div>    
+					<span>-1~12C°</span>
+					<span>晴</span>
+					<span>北风3-4级 转 微风小于3级</span>   
+				</div>     
+			</div>
+		</div>
+	</div>
+</div>  
+</body>
+</html>
