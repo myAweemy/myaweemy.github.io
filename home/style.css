@@ -3,7 +3,7 @@ body { margin:30px 150px; font-family: Arial, Helvetica, sans-serif;background-c
 li { list-style: none; overflow: hidden;}
 
 .nav { width: 350px; font-size: 12px; background: #8e9eb1; overflow: hidden; 
-	margin: 100px auto;border-radius: 5px;font-family: "Microsoft Yahei"}
+	margin: 100px auto;border-radius: 3px;font-family: "Microsoft Yahei";opacity: 0.5;filter:alpha(opacity:50);}
 .nav li { width: 350px;  float: left; }
 .nav>li{background-color: #FCFCFC;color: #4C4C4C;}
 .nav h2 { width: 350px; float: left;line-height: 39px;padding-left: 40px; cursor: pointer; 
